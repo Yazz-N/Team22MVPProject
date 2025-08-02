@@ -33,7 +33,7 @@ const Features = () => {
     <section id="features" className="py-20 bg-white dark:bg-primary-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 dark:from-primary-400 dark:via-primary-300 dark:to-primary-200 bg-clip-text text-transparent mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-600 via-accent-500 to-accent-400 dark:from-accent-400 dark:via-accent-300 dark:to-accent-200 bg-clip-text text-transparent mb-4">
             Powerful Features for Modern Teams
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300 max-w-2xl mx-auto">
@@ -53,7 +53,7 @@ const Features = () => {
                   <IconComponent className="w-6 h-6 text-primary-700 dark:text-primary-200" />
                 </div>
                 <div className="mb-2">
-                  <span className="text-sm font-medium text-primary-600 dark:text-primary-300 uppercase tracking-wide">
+                  <span className="text-sm font-medium text-accent-600 dark:text-accent-400 uppercase tracking-wide">
                     {feature.phrase}
                   </span>
                 </div>

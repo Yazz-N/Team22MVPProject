@@ -31,7 +31,7 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 dark:from-primary-400 dark:via-primary-300 dark:to-primary-200 bg-clip-text text-transparent">
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-accent-600 via-accent-500 to-accent-400 dark:from-accent-400 dark:via-accent-300 dark:to-accent-200 bg-clip-text text-transparent">
           Workflow Mach 3
         </h1>
         
@@ -51,7 +51,7 @@ const Hero = () => {
             rel="noopener noreferrer"
             className="group inline-flex px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-all duration-300 items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            Book Demo Now
+            <span className="text-accent-100">Book Demo Now</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
         </div>

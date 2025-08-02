@@ -53,7 +53,7 @@ const Testimonials = () => {
     <section id="testimonials" className="py-20 bg-gradient-to-br from-primary-50 to-primary-100/50 dark:from-primary-800 dark:to-primary-900">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary-700 dark:text-primary-200 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-600 via-accent-500 to-accent-400 dark:from-accent-400 dark:via-accent-300 dark:to-accent-200 bg-clip-text text-transparent mb-4">
             What Our Clients Say
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300">

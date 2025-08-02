@@ -31,7 +31,7 @@ const Footer = () => {
               <div className="p-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg">
                 <Workflow className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold">Workflow Mach 3</span>
+              <span className="text-xl font-bold bg-gradient-to-r from-accent-400 to-accent-300 bg-clip-text text-transparent">Workflow Mach 3</span>
             </div>
             <p className="text-primary-100 mb-6 max-w-md">
               The centralised hub that transforms how product managers handle internal workflows, 
