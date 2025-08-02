@@ -6,7 +6,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-primary-900/90 backdrop-blur-md border-b border-secondary-200/50 dark:border-primary-700/50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-secondary-900/90 backdrop-blur-md border-b border-primary-200/50 dark:border-primary-700/50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -47,13 +47,13 @@ const Header = () => {
         
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-primary-200 dark:border-secondary-700">
+          <div className="md:hidden py-4 border-t border-primary-200 dark:border-primary-700">
             <nav className="flex flex-col gap-4">
               <a href="#features" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Features</a>
               <a href="#benefits" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Benefits</a>
               <a href="#testimonials" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Testimonials</a>
               <a href="#faq" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">FAQ</a>
-              <div className="flex items-center justify-between pt-4 border-t border-primary-200 dark:border-secondary-700">
+              <div className="flex items-center justify-between pt-4 border-t border-primary-200 dark:border-primary-700">
                 <ThemeToggle />
                 <div className="flex gap-2">
                   <button className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Sign In</button>

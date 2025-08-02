@@ -3,10 +3,10 @@ import { Workflow, Mail, Phone, MapPin, Twitter, Linkedin, Github, Instagram, Fa
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary-900 dark:bg-black text-white">
+    <footer className="bg-secondary-900 dark:bg-secondary-900 text-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* CTA Section */}
-        <div className="text-center mb-16 pb-16 border-b border-secondary-800 dark:border-secondary-700">
+        <div className="text-center mb-16 pb-16 border-b border-secondary-700 dark:border-secondary-600">
           <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 dark:from-accent-400 dark:via-accent-500 dark:to-accent-600 bg-clip-text text-transparent mb-6">
             Transform Your Workflow Today
           </h2>
@@ -38,19 +38,19 @@ const Footer = () => {
               SOP management, and real-time updates.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2 bg-secondary-800 dark:bg-secondary-800 hover:bg-secondary-700 dark:hover:bg-secondary-600 rounded-lg transition-colors">
+              <a href="#" className="p-2 bg-secondary-800 hover:bg-secondary-700 rounded-lg transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-secondary-800 dark:bg-secondary-800 hover:bg-secondary-700 dark:hover:bg-secondary-600 rounded-lg transition-colors">
+              <a href="#" className="p-2 bg-secondary-800 hover:bg-secondary-700 rounded-lg transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-secondary-800 dark:bg-secondary-800 hover:bg-secondary-700 dark:hover:bg-secondary-600 rounded-lg transition-colors">
+              <a href="#" className="p-2 bg-secondary-800 hover:bg-secondary-700 rounded-lg transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-secondary-800 dark:bg-secondary-800 hover:bg-secondary-700 dark:hover:bg-secondary-600 rounded-lg transition-colors">
+              <a href="#" className="p-2 bg-secondary-800 hover:bg-secondary-700 rounded-lg transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-secondary-800 dark:bg-secondary-800 hover:bg-secondary-700 dark:hover:bg-secondary-600 rounded-lg transition-colors">
+              <a href="#" className="p-2 bg-secondary-800 hover:bg-secondary-700 rounded-lg transition-colors">
                 <Github className="w-5 h-5" />
               </a>
             </div>
@@ -91,7 +91,7 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-secondary-800 dark:border-secondary-700 pt-8 mt-12">
+        <div className="border-t border-secondary-700 pt-8 mt-12">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-primary-300 text-sm">
               © 2025 Workflow Mach 3. All rights reserved.

@@ -34,7 +34,7 @@ const Benefits = () => {
   ];
 
   return (
-    <section id="benefits" className="py-20 bg-secondary-50/50 dark:bg-primary-900">
+    <section id="benefits" className="py-20 bg-primary-50/50 dark:bg-secondary-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-primary-700 dark:text-white mb-4">
@@ -51,7 +51,7 @@ const Benefits = () => {
             return (
               <div 
                 key={index}
-                className="group p-8 bg-white dark:bg-secondary-800 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-300 dark:hover:border-secondary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className="group p-8 bg-white dark:bg-secondary-800 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-400 dark:hover:border-primary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
                 <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900/50 dark:to-accent-900/50 mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <IconComponent className={`w-6 h-6 ${benefit.color}`} />

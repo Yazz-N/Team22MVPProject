@@ -30,7 +30,7 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="py-20 bg-primary-50/50 dark:bg-primary-800">
+    <section id="features" className="py-20 bg-primary-50/50 dark:bg-secondary-800">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 dark:from-accent-400 dark:via-accent-500 dark:to-accent-600 bg-clip-text text-transparent mb-4">
@@ -47,7 +47,7 @@ const Features = () => {
             return (
               <div 
                 key={index}
-                className="group p-8 bg-white dark:bg-secondary-700 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-300 dark:hover:border-secondary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className="group p-8 bg-white dark:bg-secondary-700 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-400 dark:hover:border-primary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900/50 dark:to-accent-900/50 mb-4 group-hover:scale-110 transition-transform duration-300">
                   <IconComponent className="w-6 h-6 text-primary-600 dark:text-primary-400" />
