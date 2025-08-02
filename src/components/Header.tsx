@@ -14,7 +14,7 @@ const Header = () => {
             <div className="p-2 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg">
               <Workflow className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-accent-600 to-accent-500 bg-clip-text text-transparent">Workflow Mach 3</span>
+            <span className="text-xl font-bold text-accent-600">Workflow Mach 3</span>
           </div>
           
           {/* Desktop Navigation */}

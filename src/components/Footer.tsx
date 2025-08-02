@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* CTA Section */}
         <div className="text-center mb-16 pb-16 border-b border-primary-600">
-          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 dark:from-accent-400 dark:via-accent-500 dark:to-accent-600 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-accent-600 mb-6">
             Transform Your Workflow Today
           </h2>
           <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
@@ -31,7 +31,7 @@ const Footer = () => {
               <div className="p-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-lg">
                 <Workflow className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-accent-400 to-accent-300 bg-clip-text text-transparent">Workflow Mach 3</span>
+              <span className="text-xl font-bold text-accent-600">Workflow Mach 3</span>
             </div>
             <p className="text-primary-100 mb-6 max-w-md">
               The centralised hub that transforms how product managers handle internal workflows, 
@@ -58,7 +58,7 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-sm font-semibold mb-4 text-accent-600">Quick Links</h3>
             <ul className="space-y-2 text-xs">
               <li><a href="#features" className="text-primary-100 hover:text-white transition-colors">Features</a></li>
               <li><a href="#benefits" className="text-primary-100 hover:text-white transition-colors">Benefits</a></li>
@@ -71,7 +71,7 @@ const Footer = () => {
           
           {/* Contact */}
           <div>
-            <h3 className="text-sm font-semibold mb-4">Contact</h3>
+            <h3 className="text-sm font-semibold mb-4 text-accent-600">Contact</h3>
             <ul className="space-y-3 text-xs">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary-100" />

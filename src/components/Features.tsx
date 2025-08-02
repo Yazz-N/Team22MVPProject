@@ -33,7 +33,7 @@ const Features = () => {
     <section id="features" className="py-20 bg-white dark:bg-primary-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-600 via-accent-500 to-accent-400 dark:from-accent-400 dark:via-accent-300 dark:to-accent-200 bg-clip-text text-transparent mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-accent-600 mb-4">
             Powerful Features for Modern Teams
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300 max-w-2xl mx-auto">
