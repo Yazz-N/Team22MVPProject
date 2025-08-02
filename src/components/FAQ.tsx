@@ -38,7 +38,7 @@ const FAQ = () => {
           <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 dark:from-accent-400 dark:via-accent-500 dark:to-accent-600 bg-clip-text text-transparent mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-primary-600 dark:text-secondary-400">
+          <p className="text-lg text-primary-500 dark:text-primary-400">
             Get answers to the most common questions about Workflow Mach 3.
           </p>
         </div>
@@ -47,27 +47,27 @@ const FAQ = () => {
           {faqs.map((faq, index) => (
             <div 
               key={index}
-              className="bg-secondary-50 dark:bg-primary-800 rounded-lg border border-secondary-200 dark:border-primary-700 overflow-hidden"
+              className="bg-primary-50 dark:bg-secondary-800 rounded-lg border border-primary-200 dark:border-secondary-700 overflow-hidden"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-secondary-100 dark:hover:bg-primary-700 transition-colors"
+                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-primary-100 dark:hover:bg-secondary-700 transition-colors"
               >
-                <h3 className="text-lg font-semibold text-primary-900 dark:text-white pr-4">
+                <h3 className="text-lg font-semibold text-primary-800 dark:text-white pr-4">
                   {faq.question}
                 </h3>
                 <div className="flex-shrink-0">
                   {openIndex === index ? (
-                    <Minus className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
+                    <Minus className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   ) : (
-                    <Plus className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
+                    <Plus className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   )}
                 </div>
               </button>
               
               {openIndex === index && (
                 <div className="px-6 pb-4">
-                  <p className="text-primary-600 dark:text-secondary-400 leading-relaxed">
+                  <p className="text-primary-500 dark:text-primary-400 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

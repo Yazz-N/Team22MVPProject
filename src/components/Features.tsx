@@ -36,7 +36,7 @@ const Features = () => {
           <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 dark:from-accent-400 dark:via-accent-500 dark:to-accent-600 bg-clip-text text-transparent mb-4">
             Powerful Features for Modern Teams
           </h2>
-          <p className="text-lg text-primary-700 dark:text-secondary-400 max-w-2xl mx-auto">
+          <p className="text-lg text-primary-600 dark:text-primary-400 max-w-2xl mx-auto">
             Discover the comprehensive tools that make Workflow Mach 3 the ultimate platform for streamlined operations.
           </p>
         </div>
@@ -47,18 +47,18 @@ const Features = () => {
             return (
               <div 
                 key={index}
-                className="group p-8 bg-white dark:bg-primary-700 rounded-xl border border-secondary-200 dark:border-primary-600 hover:border-secondary-300 dark:hover:border-primary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className="group p-8 bg-white dark:bg-secondary-700 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-300 dark:hover:border-secondary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="inline-flex p-3 rounded-lg bg-gradient-to-br from-secondary-100 to-accent-100 dark:from-secondary-900/50 dark:to-accent-900/50 mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <IconComponent className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
+                <div className="inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900/50 dark:to-accent-900/50 mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <IconComponent className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div className="mb-2">
-                  <span className="text-sm font-medium text-primary-600 dark:text-secondary-400 uppercase tracking-wide">
+                  <span className="text-sm font-medium text-primary-500 dark:text-primary-400 uppercase tracking-wide">
                     {feature.phrase}
                   </span>
                 </div>
-                <h3 className="text-xl font-semibold text-primary-800 dark:text-white mb-3">{feature.title}</h3>
-                <p className="text-primary-700 dark:text-secondary-400 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-primary-700 dark:text-white mb-3">{feature.title}</h3>
+                <p className="text-primary-600 dark:text-primary-400 leading-relaxed">{feature.description}</p>
               </div>
             );
           })}

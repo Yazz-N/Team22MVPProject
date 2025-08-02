@@ -35,12 +35,12 @@ const Hero = () => {
           Workflow Mach 3
         </h1>
         
-        <p className="text-xl md:text-2xl text-primary-800 dark:text-secondary-300 mb-4 max-w-4xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-primary-700 dark:text-primary-300 mb-4 max-w-4xl mx-auto leading-relaxed">
           A centralised hub that transforms how product managers handle internal workflows, 
           SOP management, and real-time updates
         </p>
         
-        <p className="text-lg text-primary-700 dark:text-secondary-400 mb-12 max-w-3xl mx-auto">
+        <p className="text-lg text-primary-600 dark:text-primary-400 mb-12 max-w-3xl mx-auto">
           One location - all the information in one place, with access to it at your fingertips.
         </p>
         
@@ -49,7 +49,7 @@ const Hero = () => {
             href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2FER4aPpkS9vYzTZ8NjZoNzQ-workflow-mach-3-demo"
             target="_blank" 
             rel="noopener noreferrer"
-            className="group inline-flex px-8 py-4 bg-secondary-600 hover:bg-secondary-700 text-white font-semibold rounded-lg transition-all duration-300 items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            className="group inline-flex px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-all duration-300 items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             Book Demo Now
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

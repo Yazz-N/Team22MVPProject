@@ -11,27 +11,27 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-r from-secondary-600 to-secondary-700 rounded-lg">
+            <div className="p-2 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg">
               <Workflow className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-primary-800 dark:text-white">Workflow Mach 3</span>
+            <span className="text-xl font-bold text-primary-700 dark:text-white">Workflow Mach 3</span>
           </div>
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors">Features</a>
-            <a href="#benefits" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors">Benefits</a>
-            <a href="#testimonials" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors">Testimonials</a>
-            <a href="#faq" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors">FAQ</a>
+            <a href="#features" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">Features</a>
+            <a href="#benefits" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">Benefits</a>
+            <a href="#testimonials" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">Testimonials</a>
+            <a href="#faq" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">FAQ</a>
           </nav>
           
           {/* Desktop CTA and Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <button className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium transition-colors">
+            <button className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">
               Sign In
             </button>
-            <button className="px-4 py-2 bg-secondary-600 hover:bg-secondary-700 text-white font-medium rounded-lg transition-colors">
+            <button className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
               Get Started
             </button>
           </div>
@@ -41,23 +41,23 @@ const Header = () => {
             className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="w-6 h-6 text-primary-800 dark:text-secondary-300" /> : <Menu className="w-6 h-6 text-primary-800 dark:text-secondary-300" />}
+            {isMenuOpen ? <X className="w-6 h-6 text-primary-700 dark:text-primary-300" /> : <Menu className="w-6 h-6 text-primary-700 dark:text-primary-300" />}
           </button>
         </div>
         
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-secondary-200 dark:border-primary-700">
+          <div className="md:hidden py-4 border-t border-primary-200 dark:border-secondary-700">
             <nav className="flex flex-col gap-4">
-              <a href="#features" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium">Features</a>
-              <a href="#benefits" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium">Benefits</a>
-              <a href="#testimonials" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium">Testimonials</a>
-              <a href="#faq" className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium">FAQ</a>
-              <div className="flex items-center justify-between pt-4 border-t border-secondary-200 dark:border-primary-700">
+              <a href="#features" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Features</a>
+              <a href="#benefits" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Benefits</a>
+              <a href="#testimonials" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Testimonials</a>
+              <a href="#faq" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">FAQ</a>
+              <div className="flex items-center justify-between pt-4 border-t border-primary-200 dark:border-secondary-700">
                 <ThemeToggle />
                 <div className="flex gap-2">
-                  <button className="text-primary-800 dark:text-secondary-300 hover:text-secondary-600 dark:hover:text-secondary-400 font-medium">Sign In</button>
-                  <button className="px-4 py-2 bg-secondary-600 hover:bg-secondary-700 text-white font-medium rounded-lg">
+                  <button className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Sign In</button>
+                  <button className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg">
                     Get Started
                   </button>
                 </div>
