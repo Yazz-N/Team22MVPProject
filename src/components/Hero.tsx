@@ -31,16 +31,16 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 dark:from-accent-400 dark:via-accent-500 dark:to-accent-600 bg-clip-text text-transparent">
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 dark:from-primary-400 dark:via-primary-300 dark:to-primary-200 bg-clip-text text-transparent">
           Workflow Mach 3
         </h1>
         
-        <p className="text-xl md:text-2xl text-primary-700 dark:text-primary-300 mb-4 max-w-4xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-primary-800 dark:text-primary-200 mb-4 max-w-4xl mx-auto leading-relaxed">
           A centralised hub that transforms how product managers handle internal workflows, 
           SOP management, and real-time updates
         </p>
         
-        <p className="text-lg text-primary-600 dark:text-primary-400 mb-12 max-w-3xl mx-auto">
+        <p className="text-lg text-primary-700 dark:text-primary-300 mb-12 max-w-3xl mx-auto">
           One location - all the information in one place, with access to it at your fingertips.
         </p>
         

@@ -30,13 +30,13 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="py-20 bg-white dark:bg-secondary-800">
+    <section id="features" className="py-20 bg-white dark:bg-primary-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-500 via-accent-600 to-accent-700 dark:from-accent-400 dark:via-accent-500 dark:to-accent-600 bg-clip-text text-transparent mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 dark:from-primary-400 dark:via-primary-300 dark:to-primary-200 bg-clip-text text-transparent mb-4">
             Powerful Features for Modern Teams
           </h2>
-          <p className="text-lg text-primary-600 dark:text-primary-400 max-w-2xl mx-auto">
+          <p className="text-lg text-primary-600 dark:text-primary-300 max-w-2xl mx-auto">
             Discover the comprehensive tools that make Workflow Mach 3 the ultimate platform for streamlined operations.
           </p>
         </div>
@@ -47,18 +47,18 @@ const Features = () => {
             return (
               <div 
                 key={index}
-                className="group p-8 bg-primary-50 dark:bg-secondary-700 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className="group p-8 bg-primary-50 dark:bg-primary-800 rounded-xl border border-primary-200 dark:border-primary-600 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-200 to-primary-300 dark:from-primary-900/50 dark:to-primary-800/50 mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <IconComponent className="w-6 h-6 text-primary-700 dark:text-primary-300" />
+                <div className="inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-200 to-primary-300 dark:from-primary-700 dark:to-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <IconComponent className="w-6 h-6 text-primary-700 dark:text-primary-200" />
                 </div>
                 <div className="mb-2">
-                  <span className="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase tracking-wide">
+                  <span className="text-sm font-medium text-primary-600 dark:text-primary-300 uppercase tracking-wide">
                     {feature.phrase}
                   </span>
                 </div>
-                <h3 className="text-xl font-semibold text-primary-700 dark:text-white mb-3">{feature.title}</h3>
-                <p className="text-primary-600 dark:text-primary-300 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-primary-700 dark:text-primary-200 mb-3">{feature.title}</h3>
+                <p className="text-primary-600 dark:text-primary-200 leading-relaxed">{feature.description}</p>
               </div>
             );
           })}
