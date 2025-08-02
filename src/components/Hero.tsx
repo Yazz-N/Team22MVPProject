@@ -3,13 +3,13 @@ import { ArrowRight, Zap } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 via-primary-100 to-accent-50 dark:from-secondary-900 dark:via-secondary-800 dark:to-accent-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200 dark:from-secondary-900 dark:via-secondary-800 dark:to-secondary-700">
       {/* Abstract Background - Hero Section Only */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Flowing Gradient Shapes */}
-        <div className="absolute top-20 -left-20 w-96 h-96 bg-gradient-to-r from-primary-400/30 to-primary-300/30 dark:from-primary-600/20 dark:to-primary-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 -right-20 w-80 h-80 bg-gradient-to-r from-accent-400/30 to-primary-400/30 dark:from-accent-600/20 dark:to-primary-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary-300/20 to-primary-400/20 dark:from-primary-500/15 dark:to-primary-600/15 rounded-full blur-2xl animate-pulse delay-500"></div>
+        <div className="absolute top-20 -left-20 w-96 h-96 bg-gradient-to-r from-primary-500/30 to-primary-400/30 dark:from-primary-600/20 dark:to-primary-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 -right-20 w-80 h-80 bg-gradient-to-r from-primary-600/30 to-primary-500/30 dark:from-primary-700/20 dark:to-primary-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary-400/20 to-primary-500/20 dark:from-primary-500/15 dark:to-primary-600/15 rounded-full blur-2xl animate-pulse delay-500"></div>
         
         {/* Creative Abstract Lines */}
         <svg className="absolute inset-0 w-full h-full opacity-20 dark:opacity-10" xmlns="http://www.w3.org/2000/svg">

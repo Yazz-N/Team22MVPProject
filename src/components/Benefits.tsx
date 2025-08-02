@@ -14,7 +14,7 @@ const Benefits = () => {
       icon: Target,
       title: 'Enhanced Accuracy',
       description: 'Reduce errors with standardised procedures and real-time validation checks.',
-      color: 'text-accent-600 dark:text-accent-400',
+      color: 'text-primary-600 dark:text-primary-400',
       phrase: 'Transform your product management in real time'
     },
     {
@@ -28,13 +28,13 @@ const Benefits = () => {
       icon: Shield,
       title: 'Enhanced Security',
       description: 'Protect your workflows with enterprise-grade security and compliance standards.',
-      color: 'text-secondary-700 dark:text-secondary-500',
+      color: 'text-primary-600 dark:text-primary-400',
       phrase: 'Secure your operations with confidence'
     }
   ];
 
   return (
-    <section id="benefits" className="py-20 bg-primary-50/50 dark:bg-secondary-900">
+    <section id="benefits" className="py-20 bg-primary-50 dark:bg-secondary-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-primary-700 dark:text-white mb-4">
@@ -51,18 +51,18 @@ const Benefits = () => {
             return (
               <div 
                 key={index}
-                className="group p-8 bg-white dark:bg-secondary-800 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-400 dark:hover:border-primary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className="group p-8 bg-white dark:bg-secondary-800 rounded-xl border border-primary-200 dark:border-secondary-600 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
-                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900/50 dark:to-accent-900/50 mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/50 dark:to-primary-800/50 mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <IconComponent className={`w-6 h-6 ${benefit.color}`} />
                 </div>
                 <div className="mb-2">
-                  <span className="text-sm font-medium text-primary-500 dark:text-primary-400 uppercase tracking-wide">
+                  <span className="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase tracking-wide">
                     {benefit.phrase}
                   </span>
                 </div>
                 <h3 className="text-xl font-semibold text-primary-700 dark:text-white mb-3">{benefit.title}</h3>
-                <p className="text-primary-600 dark:text-primary-400 leading-relaxed">{benefit.description}</p>
+                <p className="text-primary-600 dark:text-primary-300 leading-relaxed">{benefit.description}</p>
               </div>
             );
           })}

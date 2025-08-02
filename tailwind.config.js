@@ -27,7 +27,7 @@ export default {
           600: '#2563eb',
           700: '#1d4ed8',
           800: '#1e40af',
-          900: '#1e3a8a', // Navy Blue for contrast
+          900: '#1e3a8a',
         },
         accent: {
           50: '#fff7ed',
@@ -35,7 +35,7 @@ export default {
           200: '#fed7aa',
           300: '#fdba74',
           400: '#fb923c',
-          500: '#f97316', // Rusty Orange
+          500: '#f97316',
           600: '#ea580c',
           700: '#c2410c',
           800: '#9a3412',
