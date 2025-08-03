@@ -10,12 +10,13 @@ import Footer from './components/Footer';
 
 function App() {
   useEffect(() => {
-    // Check for saved theme preference or default to light
+    // Check for saved theme preference or default to dark
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    if (savedTheme === 'dark' || !savedTheme) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
