@@ -37,6 +37,7 @@ const Features = () => {
             Powerful Features for Modern Teams
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300 max-w-2xl mx-auto">
+          </p>
           <p className="text-lg text-white max-w-2xl mx-auto">
             Discover the comprehensive tools that make Workflow Mach 3 the ultimate platform for streamlined operations.
           </p>
