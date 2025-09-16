@@ -41,6 +41,7 @@ const Benefits = () => {
             Why Choose Workflow Mach 3?
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300 max-w-2xl mx-auto">
+          </p>
           <p className="text-lg text-white max-w-2xl mx-auto">
             Discover how our platform revolutionises your team's productivity and operational excellence.
           </p>
