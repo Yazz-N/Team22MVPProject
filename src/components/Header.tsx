@@ -6,7 +6,6 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-primary-900/90 backdrop-blur-md border-b border-primary-200/50 dark:border-primary-700/50">
     <header className="fixed top-0 left-0 right-0 z-50 bg-purple-700/90 dark:bg-purple-800/90 backdrop-blur-md border-b border-purple-600/50 dark:border-purple-700/50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
@@ -67,7 +66,6 @@ const Header = () => {
           </div>
         )}
       </div>
-    </header>
     </header>
   );
 };

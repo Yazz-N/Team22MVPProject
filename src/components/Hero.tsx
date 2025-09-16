@@ -35,7 +35,6 @@ const Hero = () => {
           Workflow Mach 3
         </h1>
         
-        <p className="text-xl md:text-2xl text-primary-800 dark:text-primary-200 mb-4 max-w-4xl mx-auto leading-relaxed">
         <p className="text-xl md:text-2xl text-white mb-4 max-w-4xl mx-auto leading-relaxed">
           A centralised hub that transforms how product managers handle internal workflows, 
           SOP management, and real-time updates
@@ -62,6 +61,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
-  )
-}
