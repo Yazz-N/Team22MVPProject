@@ -68,6 +68,7 @@ const Header = () => {
         )}
       </div>
     </header>
+    </header>
   );
 };
 
