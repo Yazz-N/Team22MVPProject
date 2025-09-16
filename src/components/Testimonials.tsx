@@ -57,6 +57,7 @@ const Testimonials = () => {
             What Our Clients Say
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300">
+          </p>
           <p className="text-lg text-white">
             Discover how teams worldwide are transforming their operations with Workflow Mach 3.
           </p>
