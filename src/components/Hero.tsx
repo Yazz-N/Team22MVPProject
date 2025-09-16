@@ -3,7 +3,7 @@ import { ArrowRight, Zap } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200 dark:from-primary-900 dark:via-primary-800 dark:to-primary-700">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-purple-700 dark:bg-purple-800">
       {/* Abstract Background - Hero Section Only */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Flowing Gradient Shapes */}

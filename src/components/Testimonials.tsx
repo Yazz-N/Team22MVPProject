@@ -50,7 +50,7 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <section id="testimonials" className="py-20 bg-gradient-to-br from-primary-50 to-primary-100/50 dark:from-primary-800 dark:to-primary-900">
+    <section id="testimonials" className="py-20 bg-purple-700 dark:bg-purple-800">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-accent-600 mb-4">
