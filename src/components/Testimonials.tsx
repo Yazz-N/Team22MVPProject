@@ -57,12 +57,13 @@ const Testimonials = () => {
             What Our Clients Say
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300">
+          <p className="text-lg text-white">
             Discover how teams worldwide are transforming their operations with Workflow Mach 3.
           </p>
         </div>
 
         <div className="relative">
-          <div className="bg-white dark:bg-primary-800 rounded-2xl p-8 md:p-12 shadow-lg border border-primary-100 dark:border-primary-600 min-h-[300px] flex items-center">
+          <div className="bg-purple-600 rounded-2xl p-8 md:p-12 shadow-lg border border-purple-500 min-h-[300px] flex items-center">
             <div className="w-full text-center">
               {/* Star Rating */}
               <div className="flex justify-center gap-1 mb-6">
@@ -72,7 +73,7 @@ const Testimonials = () => {
               </div>
 
               {/* Review Text */}
-              <blockquote className="text-xl md:text-2xl text-primary-700 dark:text-primary-200 italic mb-8 leading-relaxed">
+              <blockquote className="text-xl md:text-2xl text-white italic mb-8 leading-relaxed">
                 "{testimonials[currentIndex].review}"
               </blockquote>
 
@@ -81,16 +82,16 @@ const Testimonials = () => {
                 <img 
                   src={testimonials[currentIndex].image} 
                   alt={testimonials[currentIndex].name}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-primary-200 dark:border-primary-600"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-purple-400"
                 />
                 <div className="text-left">
-                  <div className="font-semibold text-primary-700 dark:text-primary-200 text-lg">
+                  <div className="font-semibold text-white text-lg">
                     {testimonials[currentIndex].name}
                   </div>
-                  <div className="text-primary-600 dark:text-primary-300">
+                  <div className="text-purple-200">
                     {testimonials[currentIndex].title}
                   </div>
-                  <div className="text-primary-500 dark:text-primary-400 text-sm">
+                  <div className="text-purple-300 text-sm">
                     {testimonials[currentIndex].company}
                   </div>
                 </div>
@@ -101,15 +102,15 @@ const Testimonials = () => {
           {/* Navigation Buttons */}
           <button 
             onClick={prevTestimonial}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white dark:bg-primary-700 hover:bg-primary-50 dark:hover:bg-primary-600 rounded-full shadow-lg border border-primary-200 dark:border-primary-600 transition-all duration-200 hover:scale-110"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-purple-500 hover:bg-purple-400 rounded-full shadow-lg border border-purple-400 transition-all duration-200 hover:scale-110"
           >
-            <ChevronLeft className="w-5 h-5 text-primary-600 dark:text-primary-200" />
+            <ChevronLeft className="w-5 h-5 text-white" />
           </button>
           <button 
             onClick={nextTestimonial}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white dark:bg-primary-700 hover:bg-primary-50 dark:hover:bg-primary-600 rounded-full shadow-lg border border-primary-200 dark:border-primary-600 transition-all duration-200 hover:scale-110"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-purple-500 hover:bg-purple-400 rounded-full shadow-lg border border-purple-400 transition-all duration-200 hover:scale-110"
           >
-            <ChevronRight className="w-5 h-5 text-primary-600 dark:text-primary-200" />
+            <ChevronRight className="w-5 h-5 text-white" />
           </button>
 
           {/* Dots Indicator */}
@@ -120,8 +121,8 @@ const Testimonials = () => {
                 onClick={() => setCurrentIndex(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-200 ${
                   index === currentIndex 
-                    ? 'bg-primary-600 dark:bg-primary-300 scale-110' 
-                    : 'bg-primary-300 dark:bg-primary-600 hover:bg-primary-400 dark:hover:bg-primary-500'
+                    ? 'bg-accent-600 scale-110' 
+                    : 'bg-purple-400 hover:bg-purple-300'
                 }`}
               />
             ))}

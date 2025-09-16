@@ -7,11 +7,12 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-primary-900/90 backdrop-blur-md border-b border-primary-200/50 dark:border-primary-700/50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-purple-700/90 dark:bg-purple-800/90 backdrop-blur-md border-b border-purple-600/50 dark:border-purple-700/50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg">
+            <div className="p-2 bg-gradient-to-r from-accent-600 to-accent-700 rounded-lg">
               <Workflow className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold text-accent-600">Workflow Mach 3</span>
@@ -19,19 +20,19 @@ const Header = () => {
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium transition-colors">Features</a>
-            <a href="#benefits" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium transition-colors">Benefits</a>
-            <a href="#testimonials" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium transition-colors">Testimonials</a>
-            <a href="#faq" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium transition-colors">FAQ</a>
+            <a href="#features" className="text-white hover:text-accent-400 font-medium transition-colors">Features</a>
+            <a href="#benefits" className="text-white hover:text-accent-400 font-medium transition-colors">Benefits</a>
+            <a href="#testimonials" className="text-white hover:text-accent-400 font-medium transition-colors">Testimonials</a>
+            <a href="#faq" className="text-white hover:text-accent-400 font-medium transition-colors">FAQ</a>
           </nav>
           
           {/* Desktop CTA and Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <button className="text-primary-700 dark:text-primary-200 hover:text-primary-600 dark:hover:text-primary-100 font-medium transition-colors">
+            <button className="text-white hover:text-accent-400 font-medium transition-colors">
               Sign In
             </button>
-            <button className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+            <button className="px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg transition-colors">
               Get Started
             </button>
           </div>
@@ -41,23 +42,23 @@ const Header = () => {
             className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="w-6 h-6 text-primary-700 dark:text-primary-200" /> : <Menu className="w-6 h-6 text-primary-700 dark:text-primary-200" />}
+            {isMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
           </button>
         </div>
         
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-primary-200 dark:border-primary-700">
+          <div className="md:hidden py-4 border-t border-purple-600">
             <nav className="flex flex-col gap-4">
-              <a href="#features" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium">Features</a>
-              <a href="#benefits" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium">Benefits</a>
-              <a href="#testimonials" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium">Testimonials</a>
-              <a href="#faq" className="text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-200 font-medium">FAQ</a>
-              <div className="flex items-center justify-between pt-4 border-t border-primary-200 dark:border-primary-700">
+              <a href="#features" className="text-white hover:text-accent-400 font-medium">Features</a>
+              <a href="#benefits" className="text-white hover:text-accent-400 font-medium">Benefits</a>
+              <a href="#testimonials" className="text-white hover:text-accent-400 font-medium">Testimonials</a>
+              <a href="#faq" className="text-white hover:text-accent-400 font-medium">FAQ</a>
+              <div className="flex items-center justify-between pt-4 border-t border-purple-600">
                 <ThemeToggle />
                 <div className="flex gap-2">
-                  <button className="text-primary-700 dark:text-primary-200 hover:text-primary-600 dark:hover:text-primary-100 font-medium">Sign In</button>
-                  <button className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg">
+                  <button className="text-white hover:text-accent-400 font-medium">Sign In</button>
+                  <button className="px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg">
                     Get Started
                   </button>
                 </div>

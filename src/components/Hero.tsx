@@ -36,11 +36,12 @@ const Hero = () => {
         </h1>
         
         <p className="text-xl md:text-2xl text-primary-800 dark:text-primary-200 mb-4 max-w-4xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-white mb-4 max-w-4xl mx-auto leading-relaxed">
           A centralised hub that transforms how product managers handle internal workflows, 
           SOP management, and real-time updates
         </p>
         
-        <p className="text-lg text-primary-700 dark:text-primary-300 mb-12 max-w-3xl mx-auto">
+        <p className="text-lg text-white mb-12 max-w-3xl mx-auto">
           One location - all the information in one place, with access to it at your fingertips.
         </p>
         

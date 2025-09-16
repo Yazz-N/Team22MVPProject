@@ -39,6 +39,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300">
+          <p className="text-lg text-white">
             Get answers to the most common questions about Workflow Mach 3.
           </p>
         </div>
@@ -47,27 +48,27 @@ const FAQ = () => {
           {faqs.map((faq, index) => (
             <div 
               key={index}
-              className="bg-primary-50 dark:bg-primary-800 rounded-lg border border-primary-200 dark:border-primary-700 overflow-hidden"
+              className="bg-purple-600 rounded-lg border border-purple-500 overflow-hidden"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-primary-100 dark:hover:bg-primary-700 transition-colors"
+                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-purple-500 transition-colors"
               >
-                <h3 className="text-lg font-semibold text-primary-800 dark:text-primary-200 pr-4">
+                <h3 className="text-lg font-semibold text-white pr-4">
                   {faq.question}
                 </h3>
                 <div className="flex-shrink-0">
                   {openIndex === index ? (
-                    <Minus className="w-5 h-5 text-primary-600 dark:text-primary-300" />
+                    <Minus className="w-5 h-5 text-white" />
                   ) : (
-                    <Plus className="w-5 h-5 text-primary-600 dark:text-primary-300" />
+                    <Plus className="w-5 h-5 text-white" />
                   )}
                 </div>
               </button>
               
               {openIndex === index && (
                 <div className="px-6 pb-4">
-                  <p className="text-primary-600 dark:text-primary-200 leading-relaxed">
+                  <p className="text-white leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
