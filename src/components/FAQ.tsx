@@ -39,6 +39,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300">
+          </p>
           <p className="text-lg text-white">
             Get answers to the most common questions about Workflow Mach 3.
           </p>
