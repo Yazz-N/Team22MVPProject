@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Benefits from './components/Benefits';
-import Features from './components/Features';
-import Testimonials from './components/Testimonials';
-import FAQ from './components/FAQ';
-import CallToAction from './components/CallToAction';
+import Home from './pages/Home';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import Footer from './components/Footer';
 
 function App() {
@@ -26,11 +24,11 @@ function App() {
   return (
     <div className="min-h-screen">
       <Header />
-      <Hero />
-      <Benefits />
-      <Features />
-      <Testimonials />
-      <FAQ />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
       <Footer />
     </div>
   );

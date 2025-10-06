@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, Workflow } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
@@ -14,7 +15,9 @@ const Header = () => {
             <div className="p-2 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg">
               <Workflow className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-primary-600 dark:text-primary-400">OpsCentral</span>
+            <Link to="/" className="text-xl font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+              OpsCentral
+            </Link>
           </div>
           
           {/* Desktop Navigation */}
@@ -28,12 +31,12 @@ const Header = () => {
           {/* Desktop CTA and Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <button className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">
+            <Link to="/signin" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors">
               Sign In
-            </button>
-            <button className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+            </Link>
+            <Link to="/signup" className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
               Get Started
-            </button>
+            </Link>
           </div>
           
           {/* Mobile Menu Button */}
@@ -56,10 +59,10 @@ const Header = () => {
               <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                 <ThemeToggle />
                 <div className="flex gap-2">
-                  <button className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Sign In</button>
-                  <button className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg">
+                  <Link to="/signin" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">Sign In</Link>
+                  <Link to="/signup" className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg">
                     Get Started
-                  </button>
+                  </Link>
                 </div>
               </div>
             </nav>
