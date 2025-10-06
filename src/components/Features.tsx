@@ -39,7 +39,7 @@ const Features = () => {
           <p className="text-lg text-primary-600 dark:text-primary-300 max-w-2xl mx-auto">
           </p>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Discover the comprehensive tools that make Workflow Mach 3 the ultimate platform for streamlined operations.
+            Discover the comprehensive tools that make OpsCentral the ultimate platform for streamlined operations.
           </p>
         </div>
         

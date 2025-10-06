@@ -32,7 +32,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 text-accent-600">
-          Workflow Mach 3
+          OpsCentral
         </h1>
         
         <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-4 max-w-4xl mx-auto leading-relaxed">

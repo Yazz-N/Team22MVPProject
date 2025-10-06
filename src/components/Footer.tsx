@@ -31,7 +31,7 @@ const Footer = () => {
               <div className="p-2 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg">
                 <Workflow className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-primary-400">Workflow Mach 3</span>
+              <span className="text-xl font-bold text-primary-400">OpsCentral</span>
             </div>
             <p className="text-white mb-6 max-w-md">
               The centralised hub that transforms how product managers handle internal workflows, 
@@ -94,7 +94,7 @@ const Footer = () => {
         <div className="border-t border-gray-700 pt-8 mt-12">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-300 text-sm">
-              © 2025 Workflow Mach 3. All rights reserved.
+              © 2025 OpsCentral. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-gray-300 hover:text-primary-400 transition-colors">Privacy Policy</a>
