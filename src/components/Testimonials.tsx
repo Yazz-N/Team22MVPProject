@@ -100,6 +100,7 @@ const Testimonials = () => {
               </div>
             </div>
           </div>
+          </div>
 
           {/* Navigation Buttons */}
           <button 
