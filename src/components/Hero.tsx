@@ -3,7 +3,7 @@ import { ArrowRight, Zap } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-purple-700 dark:bg-purple-800">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Abstract Background - Hero Section Only */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Flowing Gradient Shapes */}
@@ -35,12 +35,12 @@ const Hero = () => {
           Workflow Mach 3
         </h1>
         
-        <p className="text-xl md:text-2xl text-white mb-4 max-w-4xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-4 max-w-4xl mx-auto leading-relaxed">
           A centralised hub that transforms how product managers handle internal workflows, 
           SOP management, and real-time updates
         </p>
         
-        <p className="text-lg text-white mb-12 max-w-3xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto">
           One location - all the information in one place, with access to it at your fingertips.
         </p>
         

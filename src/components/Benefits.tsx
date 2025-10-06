@@ -34,15 +34,15 @@ const Benefits = () => {
   ];
 
   return (
-    <section id="benefits" className="py-20 bg-purple-700 dark:bg-purple-800">
+    <section id="benefits" className="py-20 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-accent-600 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Why Choose Workflow Mach 3?
           </h2>
           <p className="text-lg text-primary-600 dark:text-primary-300 max-w-2xl mx-auto">
           </p>
-          <p className="text-lg text-white max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Discover how our platform revolutionises your team's productivity and operational excellence.
           </p>
         </div>
@@ -53,18 +53,18 @@ const Benefits = () => {
             return (
               <div 
                 key={index}
-                className="group p-8 bg-purple-600 rounded-xl border border-purple-500 hover:border-accent-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className="group p-8 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
-                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br from-accent-500 to-accent-600 mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <IconComponent className={`w-6 h-6 text-white`} />
                 </div>
                 <div className="mb-2">
-                  <span className="text-sm font-medium text-accent-400 uppercase tracking-wide">
+                  <span className="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase tracking-wide">
                     {benefit.phrase}
                   </span>
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">{benefit.title}</h3>
-                <p className="text-white leading-relaxed">{benefit.description}</p>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{benefit.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{benefit.description}</p>
               </div>
             );
           })}
