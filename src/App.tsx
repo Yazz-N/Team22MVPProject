@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
+import AssistantLauncher from './components/AssistantLauncher';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -8,6 +9,8 @@ import Book from './pages/Book';
 import Footer from './components/Footer';
 
 function App() {
+  const location = useLocation();
+  
   useEffect(() => {
     // Check for saved theme preference or default to dark
     const savedTheme = localStorage.getItem('theme');
@@ -22,6 +25,14 @@ function App() {
     }
   }, []);
 
+  const handleAssistantClick = () => {
+    // TODO: Open assistant panel
+    console.log('Assistant clicked - panel will be implemented');
+  };
+
+  // Show assistant launcher on all pages except auth pages
+  const showAssistant = !location.pathname.includes('/signin') && !location.pathname.includes('/signup');
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -32,6 +43,7 @@ function App() {
         <Route path="/book" element={<Book />} />
       </Routes>
       <Footer />
+      {showAssistant && <AssistantLauncher onClick={handleAssistantClick} />}
     </div>
   );
 }
