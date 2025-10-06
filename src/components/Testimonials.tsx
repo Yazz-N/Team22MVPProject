@@ -65,7 +65,7 @@ const Testimonials = () => {
 
         <div className="relative">
           <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-lg border border-gray-200 dark:border-gray-700 min-h-[300px] flex items-center">
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-lg border-4 border-primary-600 dark:border-gray-700 min-h-[300px] flex items-center">
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-lg border-4 border-primary-600 dark:border-primary-600 min-h-[300px] flex items-center">
             <div className="w-full text-center">
               {/* Star Rating */}
               <div className="flex justify-center gap-1 mb-6">

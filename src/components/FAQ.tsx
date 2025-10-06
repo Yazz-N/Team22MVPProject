@@ -50,7 +50,7 @@ const FAQ = () => {
             <div 
               key={index}
               className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
-              className="bg-white dark:bg-gray-900 rounded-lg border-4 border-primary-600 dark:border-gray-700 overflow-hidden"
+              className="bg-white dark:bg-gray-900 rounded-lg border-4 border-primary-600 dark:border-primary-600 overflow-hidden"
             >
               <button
                 onClick={() => toggleFAQ(index)}
