@@ -3,7 +3,7 @@ import { Workflow, Mail, Phone, MapPin, Twitter, Linkedin, Github, Instagram, Fa
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-gray-50 to-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <footer className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* CTA Section */}
         <div className="text-center mb-16 pb-16 border-b border-gray-300 dark:border-gray-700">
@@ -41,16 +41,16 @@ const Footer = () => {
               <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-transparent">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-transparent">
+              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-transparent">
+              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-transparent">
+              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-transparent">
+              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
                 <Github className="w-5 h-5" />
               </a>
             </div>
