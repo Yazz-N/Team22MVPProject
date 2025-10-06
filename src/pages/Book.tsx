@@ -401,10 +401,10 @@ const Book = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Book Your OpsCentral Demo
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
             Schedule a 30-minute personalized demo to see how OpsCentral can transform your workflows
           </p>
         </div>
@@ -412,14 +412,14 @@ const Book = () => {
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           {/* Timezone Selection */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Globe className="w-5 h-5" />
               Select Your Timezone
             </h2>
             <select
               value={selectedTimezone}
               onChange={handleTimezoneChange}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white min-h-[44px]"
             >
               {commonTimezones.map((tz) => (
                 <option key={tz} value={tz}>
@@ -431,11 +431,11 @@ const Book = () => {
 
           {/* Date Selection */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5" />
               Select Date
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-7 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2">
               {dates.map((date) => (
                 <button
                   key={date.date}
@@ -448,11 +448,11 @@ const Book = () => {
                     selectedDate === date.date
                       ? 'bg-primary-600 text-white border-primary-600'
                       : 'bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-200 dark:border-gray-600 hover:border-primary-500'
-                  }`}
+                  } min-h-[44px] text-sm sm:text-base`}
                 >
-                  <div className="text-sm font-medium">{date.display}</div>
+                  <div className="text-xs sm:text-sm font-medium">{date.display}</div>
                   {date.isToday && (
-                    <div className="text-xs text-primary-400 mt-1">Today</div>
+                    <div className="text-xs text-primary-400 mt-1 hidden sm:block">Today</div>
                   )}
                 </button>
               ))}
@@ -462,11 +462,12 @@ const Book = () => {
           {/* Time Selection */}
           {selectedDate && selectedTimezone && (
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5" />
-                Select Time ({selectedTimezone.replace('_', ' ')})
+                <span className="hidden sm:inline">Select Time ({selectedTimezone.replace('_', ' ')})</span>
+                <span className="sm:hidden">Select Time</span>
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                 {generateTimeSlots(selectedDate).map((slot) => (
                   <button
                     key={slot.time}
@@ -478,11 +479,11 @@ const Book = () => {
                         : slot.available
                         ? 'bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-200 dark:border-gray-600 hover:border-primary-500'
                         : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 border-gray-200 dark:border-gray-700 cursor-not-allowed'
-                    }`}
+                    } min-h-[44px] text-sm sm:text-base`}
                   >
                     {slot.time}
                     {!slot.available && (
-                      <div className="text-xs mt-1">Unavailable</div>
+                      <div className="text-xs mt-1 hidden sm:block">Unavailable</div>
                     )}
                   </button>
                 ))}
@@ -493,12 +494,12 @@ const Book = () => {
           {/* Booking Form */}
           {showForm && (
             <form onSubmit={handleSubmit} className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                 <User className="w-5 h-5" />
                 Your Details
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Full Name *
@@ -510,7 +511,7 @@ const Book = () => {
                     required
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white min-h-[44px]"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -526,7 +527,7 @@ const Book = () => {
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white min-h-[44px]"
                     placeholder="Enter your email address"
                   />
                 </div>
@@ -549,7 +550,7 @@ const Book = () => {
 
               {/* Pain Points Section */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <MessageSquare className="w-5 h-5" />
                   Help Us Prepare (Optional)
                 </h3>
@@ -649,7 +650,7 @@ const Book = () => {
               <button
                 type="submit"
                 disabled={!gdprConsent || loading}
-                className={`w-full py-4 px-6 rounded-lg font-semibold transition-all ${
+                className={`w-full py-3 sm:py-4 px-6 rounded-lg font-semibold transition-all min-h-[44px] text-base sm:text-lg ${
                   gdprConsent && !loading
                     ? 'bg-accent-600 hover:bg-accent-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1'
                     : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'

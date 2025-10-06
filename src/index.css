@@ -9,3 +9,13 @@
 * {
   font-family: 'Montserrat', sans-serif;
 }
+
+/* Prevent horizontal overflow */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Ensure smooth scrolling on mobile */
+html {
+  scroll-behavior: smooth;
+}
