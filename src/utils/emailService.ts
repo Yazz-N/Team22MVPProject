@@ -4,6 +4,11 @@ interface BookingEmailData {
     fullName: string;
     email: string;
     notes: string;
+    timezoneSelected: string;
+    utcStart: string;
+    durationMinutes: number;
+    localStartTime?: string;
+    utcStartTime?: string;
     painPoints: {
       workflowChallenge: string;
       sopManagement: string;
@@ -22,15 +27,28 @@ interface BookingEmailData {
 export const sendBookingConfirmation = async (data: BookingEmailData) => {
   const { booking, icsContent } = data;
   
-  // Format date for email subject
-  const bookingDate = new Date(booking.date);
-  const formattedDate = bookingDate.toLocaleDateString('en-GB', {
+  // Use local time for display
+  const localStartTime = booking.localStartTime ? new Date(booking.localStartTime) : new Date(`${booking.date}T${booking.time}:00`);
+  const utcStartTime = booking.utcStartTime ? new Date(booking.utcStartTime) : new Date(booking.utcStart);
+  
+  // Format date for email subject  
+  const formattedDate = localStartTime.toLocaleDateString('en-GB', {
     weekday: 'long',
     day: '2-digit',
     month: 'short'
   });
   
-  const subject = `Your OpsCentral booking is confirmed – ${formattedDate} at ${booking.time}`;
+  const formattedTime = localStartTime.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  
+  const formattedUtcTime = utcStartTime.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  
+  const subject = `Your OpsCentral booking is confirmed – ${formattedDate} at ${formattedTime}`;
   
   // Create email content
   const emailContent = `
@@ -44,8 +62,9 @@ export const sendBookingConfirmation = async (data: BookingEmailData) => {
       <div style="background: #f0fdfa; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #0d9488; margin-top: 0;">Booking Details</h3>
         <p><strong>Date:</strong> ${formattedDate}</p>
-        <p><strong>Time:</strong> ${booking.time} (Europe/London)</p>
-        <p><strong>Duration:</strong> 30 minutes</p>
+        <p><strong>Time:</strong> ${formattedTime} (${booking.timezoneSelected})</p>
+        <p><strong>Equivalent in UTC:</strong> ${formattedUtcTime} UTC</p>
+        <p><strong>Duration:</strong> ${booking.durationMinutes} minutes</p>
         <p><strong>Location:</strong> Online (link will be provided)</p>
       </div>
       
@@ -85,7 +104,9 @@ export const sendBookingConfirmation = async (data: BookingEmailData) => {
         <p><strong>Name:</strong> ${booking.fullName}</p>
         <p><strong>Email:</strong> ${booking.email}</p>
         <p><strong>Date:</strong> ${formattedDate}</p>
-        <p><strong>Time:</strong> ${booking.time} (Europe/London)</p>
+        <p><strong>Time:</strong> ${formattedTime} (${booking.timezoneSelected})</p>
+        <p><strong>Equivalent in UTC:</strong> ${formattedUtcTime} UTC</p>
+        <p><strong>Duration:</strong> ${booking.durationMinutes} minutes</p>
         <p><strong>Booking ID:</strong> ${booking.id}</p>
       </div>
       
@@ -116,7 +137,7 @@ export const sendBookingConfirmation = async (data: BookingEmailData) => {
   console.log('Content:', emailContent);
   console.log('\n=== INTERNAL TEAM EMAIL ===');
   console.log('To: team@opscentral.com');
-  console.log('Subject:', `New Demo Booking - ${booking.fullName} - ${formattedDate} at ${booking.time}`);
+  console.log('Subject:', `New Demo Booking - ${booking.fullName} - ${formattedDate} at ${formattedTime} (${booking.timezoneSelected})`);
   console.log('Content:', internalEmailContent);
   console.log('\n=== ICS CALENDAR ATTACHMENT ===');
   console.log(icsContent);

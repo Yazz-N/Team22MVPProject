@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Mail, MessageSquare, Check, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Calendar, Clock, User, Mail, MessageSquare, Check, ArrowLeft, ExternalLink, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface TimeSlot {
@@ -21,11 +21,15 @@ interface Booking {
   };
   date: string;
   time: string;
+  timezoneSelected: string;
+  utcStart: string;
+  durationMinutes: number;
   createdAt: string;
   status: string;
 }
 
 const Book = () => {
+  const [selectedTimezone, setSelectedTimezone] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [showForm, setShowForm] = useState(false);
@@ -47,6 +51,43 @@ const Book = () => {
   });
 
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
+
+  // Common IANA timezones
+  const commonTimezones = [
+    'Europe/London',
+    'America/New_York',
+    'America/Los_Angeles',
+    'America/Chicago',
+    'America/Toronto',
+    'Europe/Paris',
+    'Europe/Berlin',
+    'Europe/Madrid',
+    'Europe/Rome',
+    'Europe/Amsterdam',
+    'Asia/Dubai',
+    'Asia/Singapore',
+    'Asia/Tokyo',
+    'Asia/Hong_Kong',
+    'Asia/Shanghai',
+    'Asia/Kolkata',
+    'Australia/Sydney',
+    'Australia/Melbourne',
+    'Pacific/Auckland'
+  ];
+
+  // Detect user's timezone
+  useEffect(() => {
+    try {
+      const detectedTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (commonTimezones.includes(detectedTz)) {
+        setSelectedTimezone(detectedTz);
+      } else {
+        setSelectedTimezone('Europe/London');
+      }
+    } catch (error) {
+      setSelectedTimezone('Europe/London');
+    }
+  }, []);
 
   // Generate next 7 days
   const generateDates = () => {
@@ -78,28 +119,76 @@ const Book = () => {
     }
   }, [dates, selectedDate]);
 
-  // Generate time slots with some pre-blocked
+  // Generate time slots with pre-blocked slots
   const generateTimeSlots = (date: string): TimeSlot[] => {
-    const times = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+    const times = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
     const dateIndex = dates.findIndex(d => d.date === date);
     
-    // Pre-block 2 slots per day at different times
+    // Pre-block 3 slots per day at different times (consistent per day)
     const blockedSlots = [
-      [1, 4], // Day 0: 11:00, 14:00
-      [2, 5], // Day 1: 12:00, 15:00
-      [0, 6], // Day 2: 10:00, 16:00
-      [3, 1], // Day 3: 13:00, 11:00
-      [4, 2], // Day 4: 14:00, 12:00
-      [5, 0], // Day 5: 15:00, 10:00
-      [6, 3], // Day 6: 16:00, 13:00
+      [1, 4, 7], // Day 0: 10:00, 13:00, 16:00
+      [2, 5, 8], // Day 1: 11:00, 14:00, 17:00
+      [0, 3, 6], // Day 2: 09:00, 12:00, 15:00
+      [1, 5, 7], // Day 3: 10:00, 14:00, 16:00
+      [2, 4, 8], // Day 4: 11:00, 13:00, 17:00
+      [0, 6, 3], // Day 5: 09:00, 15:00, 12:00
+      [1, 3, 5], // Day 6: 10:00, 12:00, 14:00
     ];
 
-    const blocked = blockedSlots[dateIndex] || [1, 4];
+    const blocked = blockedSlots[dateIndex] || [1, 4, 7];
 
-    return times.map((time, index) => ({
-      time,
-      available: !blocked.includes(index)
-    }));
+    // Check for existing bookings
+    const existingBookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    
+    return times.map((time, index) => {
+      // Check if slot is pre-blocked
+      if (blocked.includes(index)) {
+        return { time, available: false };
+      }
+
+      // Check for booking collision by UTC time
+      const slotDateTime = new Date(`${date}T${time}:00`);
+      const utcStart = convertToUTC(slotDateTime, selectedTimezone).toISOString();
+      
+      const isBooked = existingBookings.some((booking: Booking) => 
+        booking.utcStart === utcStart
+      );
+
+      return { time, available: !isBooked };
+    });
+  };
+
+  // Convert local time to UTC
+  const convertToUTC = (localDateTime: Date, timezone: string): Date => {
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+
+    const parts = formatter.formatToParts(localDateTime);
+    const localString = `${parts.find(p => p.type === 'year')?.value}-${parts.find(p => p.type === 'month')?.value}-${parts.find(p => p.type === 'day')?.value}T${parts.find(p => p.type === 'hour')?.value}:${parts.find(p => p.type === 'minute')?.value}:${parts.find(p => p.type === 'second')?.value}`;
+    
+    const localDate = new Date(localString);
+    const utcDate = new Date(localDateTime.getTime() + (localDate.getTime() - localDateTime.getTime()));
+    
+    return utcDate;
+  };
+
+  // Convert UTC to local time
+  const convertFromUTC = (utcDateTime: Date, timezone: string): Date => {
+    return new Date(utcDateTime.toLocaleString('en-US', { timeZone: timezone }));
+  };
+
+  const handleTimezoneChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTimezone(e.target.value);
+    setSelectedTime('');
+    setShowForm(false);
   };
 
   const handleTimeSelect = (time: string) => {
@@ -128,8 +217,8 @@ const Book = () => {
   };
 
   const generateICS = (booking: Booking) => {
-    const startDate = new Date(`${booking.date}T${booking.time}:00`);
-    const endDate = new Date(startDate.getTime() + 30 * 60000); // 30 minutes later
+    const startDate = new Date(booking.utcStart);
+    const endDate = new Date(startDate.getTime() + booking.durationMinutes * 60000);
     
     const formatDate = (date: Date) => {
       return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
@@ -141,8 +230,8 @@ const Book = () => {
       'PRODID:-//OpsCentral//Booking//EN',
       'BEGIN:VEVENT',
       `UID:${booking.id}@opscentral.com`,
-      `DTSTART:${formatDate(startDate)}`,
-      `DTEND:${formatDate(endDate)}`,
+      `DTSTART;TZID=${booking.timezoneSelected}:${formatDate(startDate)}`,
+      `DTEND;TZID=${booking.timezoneSelected}:${formatDate(endDate)}`,
       'SUMMARY:OpsCentral Demo Session',
       'DESCRIPTION:Your scheduled OpsCentral demo session',
       'LOCATION:Online',
@@ -156,13 +245,20 @@ const Book = () => {
 
   const sendConfirmationEmail = async (booking: Booking) => {
     try {
+      const localStartTime = convertFromUTC(new Date(booking.utcStart), booking.timezoneSelected);
+      const utcStartTime = new Date(booking.utcStart);
+      
       const response = await fetch('/api/send-booking-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          booking,
+          booking: {
+            ...booking,
+            localStartTime: localStartTime.toISOString(),
+            utcStartTime: utcStartTime.toISOString()
+          },
           icsContent: generateICS(booking)
         }),
       });
@@ -182,6 +278,10 @@ const Book = () => {
     setLoading(true);
 
     try {
+      // Create UTC start time
+      const localDateTime = new Date(`${selectedDate}T${selectedTime}:00`);
+      const utcStart = convertToUTC(localDateTime, selectedTimezone);
+
       // Create booking
       const booking: Booking = {
         id: `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -191,6 +291,9 @@ const Book = () => {
         painPoints: formData.painPoints,
         date: selectedDate,
         time: selectedTime,
+        timezoneSelected: selectedTimezone,
+        utcStart: utcStart.toISOString(),
+        durationMinutes: 30,
         createdAt: new Date().toISOString(),
         status: 'confirmed'
       };
@@ -214,8 +317,8 @@ const Book = () => {
   };
 
   const generateGoogleCalendarLink = (booking: Booking) => {
-    const startDate = new Date(`${booking.date}T${booking.time}:00`);
-    const endDate = new Date(startDate.getTime() + 30 * 60000);
+    const startDate = new Date(booking.utcStart);
+    const endDate = new Date(startDate.getTime() + booking.durationMinutes * 60000);
     
     const formatGoogleDate = (date: Date) => {
       return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
@@ -226,13 +329,16 @@ const Book = () => {
       text: 'OpsCentral Demo Session',
       dates: `${formatGoogleDate(startDate)}/${formatGoogleDate(endDate)}`,
       details: 'Your scheduled OpsCentral demo session',
-      location: 'Online'
+      location: 'Online',
+      ctz: booking.timezoneSelected
     });
 
     return `https://calendar.google.com/calendar/render?${params.toString()}`;
   };
 
   if (showSuccess && confirmedBooking) {
+    const localStartTime = convertFromUTC(new Date(confirmedBooking.utcStart), confirmedBooking.timezoneSelected);
+    
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
         <div className="max-w-2xl mx-auto px-6 py-12">
@@ -248,11 +354,14 @@ const Book = () => {
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
               Your OpsCentral demo is scheduled for{' '}
               <span className="font-semibold text-gray-900 dark:text-white">
-                {new Date(confirmedBooking.date).toLocaleDateString('en-GB', { 
+                {localStartTime.toLocaleDateString('en-GB', { 
                   weekday: 'long', 
                   day: 'numeric', 
                   month: 'long' 
-                })} at {confirmedBooking.time}
+                })} at {localStartTime.toLocaleTimeString('en-GB', { 
+                  hour: '2-digit', 
+                  minute: '2-digit' 
+                })} ({confirmedBooking.timezoneSelected})
               </span>
             </p>
 
@@ -301,6 +410,25 @@ const Book = () => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          {/* Timezone Selection */}
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <Globe className="w-5 h-5" />
+              Select Your Timezone
+            </h2>
+            <select
+              value={selectedTimezone}
+              onChange={handleTimezoneChange}
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            >
+              {commonTimezones.map((tz) => (
+                <option key={tz} value={tz}>
+                  {tz.replace('_', ' ')}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Date Selection */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
@@ -332,13 +460,13 @@ const Book = () => {
           </div>
 
           {/* Time Selection */}
-          {selectedDate && (
+          {selectedDate && selectedTimezone && (
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5" />
-                Select Time (Europe/London)
+                Select Time ({selectedTimezone.replace('_', ' ')})
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
                 {generateTimeSlots(selectedDate).map((slot) => (
                   <button
                     key={slot.time}
