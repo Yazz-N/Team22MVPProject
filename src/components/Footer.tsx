@@ -91,11 +91,11 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-300 dark:border-gray-700 pt-8 mt-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:pr-0 md:pr-0 lg:pr-28 xl:pr-32">
             <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
               © 2025 OpsCentral. All rights reserved.
             </p>
-            <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm">
+            <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm justify-center text-center">
               <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Privacy Policy</a>
               <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Terms & Conditions</a>
               <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Cookie Policy</a>
