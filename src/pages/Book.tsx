@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Mail, MessageSquare, Check, ArrowLeft, ExternalLink, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface TimeSlot {
   time: string;
@@ -29,6 +30,7 @@ interface Booking {
 }
 
 const Book = () => {
+  const location = useLocation();
   const [selectedTimezone, setSelectedTimezone] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -51,6 +53,15 @@ const Book = () => {
   });
 
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
+
+  // Scroll to top and focus heading when route becomes /book
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    const heading = document.getElementById("book-heading");
+    if (heading) {
+      heading.focus();
+    }
+  }, [location.pathname]);
 
   // Common IANA timezones
   const commonTimezones = [
@@ -401,7 +412,11 @@ const Book = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 
+            id="book-heading"
+            tabIndex={-1}
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 focus:outline-none"
+          >
             Book Your OpsCentral Demo
           </h1>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
