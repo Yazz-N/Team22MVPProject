@@ -8,8 +8,6 @@ import SignUp from './pages/SignUp';
 import Book from './pages/Book';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
 import Cookies from './pages/Cookies';
 import Footer from './components/Footer';
 
