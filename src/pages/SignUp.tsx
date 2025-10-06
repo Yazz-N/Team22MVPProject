@@ -16,6 +16,8 @@ const SignUp = () => {
     password: ''
   });
 
+  const [gdprConsent, setGdprConsent] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -56,14 +58,14 @@ const SignUp = () => {
     }
 
     setErrors(newErrors);
-    return !newErrors.fullName && !newErrors.email && !newErrors.password;
+    return !newErrors.fullName && !newErrors.email && !newErrors.password && gdprConsent;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
       // Placeholder for sign-up logic
-      console.log('Sign up attempt:', formData);
+      console.log('Sign up attempt:', { ...formData, gdprConsent, marketingConsent });
       alert('Sign-up functionality will be implemented with backend integration');
     }
   };
@@ -169,9 +171,52 @@ const SignUp = () => {
               </div>
             </div>
 
+            {/* GDPR Consent Checkboxes */}
+            <div className="space-y-4">
+              <div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={gdprConsent}
+                    onChange={(e) => setGdprConsent(e.target.checked)}
+                    className="mt-1 w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    I agree to the{' '}
+                    <Link to="/privacy" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline">
+                      Privacy Policy
+                    </Link>
+                    {' '}and{' '}
+                    <Link to="/terms" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline">
+                      Terms & Conditions
+                    </Link>
+                    . *
+                  </span>
+                </label>
+              </div>
+
+              <div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={(e) => setMarketingConsent(e.target.checked)}
+                    className="mt-1 w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    I consent to receive product updates and onboarding emails from OpsCentral.
+                  </span>
+                </label>
+              </div>
+            </div>
             <button
               type="submit"
-              className="group w-full inline-flex justify-center items-center px-8 py-4 bg-accent-600 hover:bg-accent-700 text-white font-semibold rounded-lg transition-all duration-300 gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              disabled={!gdprConsent}
+              className={`group w-full inline-flex justify-center items-center px-8 py-4 font-semibold rounded-lg transition-all duration-300 gap-2 shadow-lg ${
+                gdprConsent
+                  ? 'bg-accent-600 hover:bg-accent-700 text-white hover:shadow-xl transform hover:-translate-y-1'
+                  : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+              }`}
             >
               Create Account
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
