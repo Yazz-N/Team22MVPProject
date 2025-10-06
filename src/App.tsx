@@ -5,6 +5,7 @@ import AssistantLauncher from './components/AssistantLauncher';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import About from './pages/About';
 import Book from './pages/Book';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
@@ -43,6 +44,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/about" element={<About />} />
         <Route path="/book" element={<Book />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
