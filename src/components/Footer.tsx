@@ -19,7 +19,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             className="group inline-flex px-8 py-4 bg-accent-600 hover:bg-accent-700 text-white font-semibold rounded-lg transition-all duration-300 items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            Book Demo Now
+            Get Centralised Access
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
@@ -75,8 +75,8 @@ const Footer = () => {
             <ul className="space-y-3 text-xs">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gray-300" />
-                <a href="mailto:hello@workflowmach3.com" className="text-gray-300 hover:text-primary-400 transition-colors break-all">
-                  hello@workflowmach3.com
+                <a href="mailto:hello@opscentral.com" className="text-gray-300 hover:text-primary-400 transition-colors break-all">
+                  hello@opscentral.com
                 </a>
               </li>
               <li className="flex items-center gap-2">

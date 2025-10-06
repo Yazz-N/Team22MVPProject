@@ -51,7 +51,7 @@ const Hero = () => {
             rel="noopener noreferrer"
             className="group inline-flex px-8 py-4 bg-accent-600 hover:bg-accent-700 text-white font-semibold rounded-lg transition-all duration-300 items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            BOOK DEMO NOW
+            Experience OpsCentral Today
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
