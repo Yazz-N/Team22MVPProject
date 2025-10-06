@@ -37,19 +37,49 @@ const Footer = () => {
               SOP management, and real-time updates.
             </p>
             <div className="flex flex-wrap gap-3 sm:gap-4">
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
+              <a 
+                href="https://twitter.com/OpsCentral" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="OpsCentral Twitter"
+                className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-all duration-300 border-4 border-primary-600 dark:border-primary-600 hover:scale-110 hover:shadow-lg hover:shadow-primary-500/25 cursor-pointer"
+              >
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
+              <a 
+                href="https://linkedin.com/company/OpsCentral" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="OpsCentral LinkedIn"
+                className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-all duration-300 border-4 border-primary-600 dark:border-primary-600 hover:scale-110 hover:shadow-lg hover:shadow-primary-500/25 cursor-pointer"
+              >
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
+              <a 
+                href="https://instagram.com/OpsCentral" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="OpsCentral Instagram"
+                className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-all duration-300 border-4 border-primary-600 dark:border-primary-600 hover:scale-110 hover:shadow-lg hover:shadow-primary-500/25 cursor-pointer"
+              >
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
+              <a 
+                href="https://facebook.com/OpsCentral" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="OpsCentral Facebook"
+                className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-all duration-300 border-4 border-primary-600 dark:border-primary-600 hover:scale-110 hover:shadow-lg hover:shadow-primary-500/25 cursor-pointer"
+              >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors border-4 border-primary-600 dark:border-primary-600">
+              <a 
+                href="https://github.com/OpsCentral" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="OpsCentral GitHub"
+                className="p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-all duration-300 border-4 border-primary-600 dark:border-primary-600 hover:scale-110 hover:shadow-lg hover:shadow-primary-500/25 cursor-pointer"
+              >
                 <Github className="w-5 h-5" />
               </a>
             </div>
