@@ -96,9 +96,9 @@ const Footer = () => {
               © 2025 OpsCentral. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm justify-center text-center">
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Terms & Conditions</a>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Cookie Policy</a>
+              <Link to="/privacy" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Terms & Conditions</Link>
+              <Link to="/cookies" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Cookie Settings</Link>
             </div>
           </div>
         </div>
