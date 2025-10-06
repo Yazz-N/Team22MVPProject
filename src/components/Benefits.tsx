@@ -34,7 +34,7 @@ const Benefits = () => {
   ];
 
   return (
-    <section id="benefits" className="py-20 bg-white dark:bg-gray-900">
+    <section id="benefits" className="py-20 bg-white dark:bg-gray-900 scroll-mt-24 md:scroll-mt-28 lg:scroll-mt-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
