@@ -209,6 +209,16 @@ const SignUp = () => {
                 </label>
               </div>
             </div>
+            
+            <div className="text-center">
+              <Link 
+                to="/cookies" 
+                className="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              >
+                Cookie Settings
+              </Link>
+            </div>
+            
             <button
               type="submit"
               disabled={!gdprConsent}
