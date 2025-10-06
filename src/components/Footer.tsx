@@ -13,15 +13,13 @@ const Footer = () => {
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
             Are you ready to revolutionise how your team handles workflows and SOPs?
           </p>
-          <a 
-            href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2FER4aPpkS9vYzTZ8NjZoNzQ-workflow-mach-3-demo" 
-            target="_blank" 
-            rel="noopener noreferrer"
+          <Link 
+            to="/book"
             className="group inline-flex px-8 py-4 bg-accent-600 hover:bg-accent-700 text-white font-semibold rounded-lg transition-all duration-300 items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             Get Centralised Access
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-4 gap-8">
