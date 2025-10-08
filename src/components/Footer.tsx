@@ -34,7 +34,7 @@ const Footer = () => {
             </div>
             <p className="text-sm sm:text-base text-gray-700 dark:text-white mb-6 max-w-md">
               The centralised hub that transforms how product managers handle internal workflows, 
-              SOP management, and real-time updates.
+              Process Flows, and real-time updates.
             </p>
             <div className="flex flex-wrap gap-3 sm:gap-4">
               <a 

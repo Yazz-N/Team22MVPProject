@@ -10,7 +10,7 @@ const About = () => {
           </h1>
           
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-            OpsCentral is built for product managers who need a single, dependable hub to align workflows, standardise SOPs, and track updates in real time. Our mission is simple: fewer tabs, fewer handoffs, clearer ownership - so teams can move faster with confidence.
+            OpsCentral is built for product managers who need a single, dependable hub to align workflows, standardise Process Flows, and track updates in real time. Our mission is simple: fewer tabs, fewer handoffs, clearer ownership - so teams can move faster with confidence.
           </p>
 
           <div className="space-y-8">
@@ -28,7 +28,7 @@ const About = () => {
                   <strong className="text-gray-900 dark:text-white">Save time:</strong> Streamline processes and remove duplication.
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  <strong className="text-gray-900 dark:text-white">Enhance accuracy:</strong> Standardise SOPs with real-time validation.
+                  <strong className="text-gray-900 dark:text-white">Enhance accuracy:</strong> Standardise Process Flows with real-time validation.
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                   <strong className="text-gray-900 dark:text-white">Collaborate better:</strong> One central place for updates, assets, and ownership.
