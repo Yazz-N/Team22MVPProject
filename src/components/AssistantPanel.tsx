@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, RotateCcw } from 'lucide-react';
-
-interface Message {
-  id: string;
-  text: string;
-  timestamp: string;
-  isUser: boolean;
-}
+import { X, Send, RotateCcw, Plus, MessageSquare } from 'lucide-react';
+import { store } from '../lib/store';
+import type { ChatThread, ChatMessage } from '../lib/store/types';
 
 interface AssistantPanelProps {
   isOpen: boolean;
@@ -14,27 +9,39 @@ interface AssistantPanelProps {
 }
 
 const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [threads, setThreads] = useState<ChatThread[]>([]);
+  const [currentThread, setCurrentThread] = useState<ChatThread | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState('');
+  const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Load messages from localStorage on mount
+  // Load threads and messages on mount
   useEffect(() => {
-    const saved = localStorage.getItem('opsChatDraft');
-    if (saved) {
+    const loadData = async () => {
+      if (!isOpen) return;
+      
       try {
-        setMessages(JSON.parse(saved));
+        const threadsData = await store.listChatThreads();
+        setThreads(threadsData);
+        
+        // Load the most recent thread or create a new one
+        if (threadsData.length > 0) {
+          const latestThread = threadsData[0];
+          setCurrentThread(latestThread);
+          const messagesData = await store.listChatMessages(latestThread.id);
+          setMessages(messagesData);
+        } else {
+          await createNewThread();
+        }
       } catch (error) {
-        console.warn('Failed to load chat messages:', error);
+        console.error('Failed to load chat data:', error);
       }
-    }
-  }, []);
+    };
 
-  // Save messages to localStorage when they change
-  useEffect(() => {
-    localStorage.setItem('opsChatDraft', JSON.stringify(messages));
-  }, [messages]);
+    loadData();
+  }, [isOpen]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -48,18 +55,70 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const handleSendMessage = () => {
-    if (!inputText.trim()) return;
-
-    const newMessage: Message = {
+  const createNewThread = async () => {
+    const newThread: ChatThread = {
       id: Date.now().toString(),
-      text: inputText.trim(),
-      timestamp: new Date().toISOString(),
-      isUser: true
+      title: 'New Conversation',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
-    setMessages(prev => [...prev, newMessage]);
-    setInputText('');
+    try {
+      await store.addChatThread(newThread);
+      setThreads(prev => [newThread, ...prev]);
+      setCurrentThread(newThread);
+      setMessages([]);
+    } catch (error) {
+      console.error('Failed to create new thread:', error);
+    }
+  };
+
+  const switchThread = async (thread: ChatThread) => {
+    setCurrentThread(thread);
+    try {
+      const messagesData = await store.listChatMessages(thread.id);
+      setMessages(messagesData);
+    } catch (error) {
+      console.error('Failed to load messages:', error);
+      setMessages([]);
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (!inputText.trim() || !currentThread || loading) return;
+
+    setLoading(true);
+
+    const newMessage: ChatMessage = {
+      id: Date.now().toString(),
+      threadId: currentThread.id,
+      role: 'user',
+      content: inputText.trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    const saveMessage = async () => {
+      try {
+        await store.addChatMessage(newMessage);
+        setMessages(prev => [...prev, newMessage]);
+        
+        // Update thread title if it's the first message
+        if (messages.length === 0) {
+          const title = inputText.trim().slice(0, 50) + (inputText.trim().length > 50 ? '...' : '');
+          await store.updateChatThread(currentThread.id, { title });
+          setThreads(prev => prev.map(t => t.id === currentThread.id ? { ...t, title } : t));
+          setCurrentThread(prev => prev ? { ...prev, title } : null);
+        }
+        
+        setInputText('');
+      } catch (error) {
+        console.error('Failed to save message:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    saveMessage();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -69,15 +128,29 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleClearConversation = () => {
-    if (window.confirm('Are you sure you want to clear the conversation?')) {
-      setMessages([]);
-      localStorage.removeItem('opsChatDraft');
+  const handleClearConversation = async () => {
+    if (!currentThread) return;
+    
+    if (window.confirm('Are you sure you want to delete this conversation?')) {
+      try {
+        await store.deleteChatThread(currentThread.id);
+        setThreads(prev => prev.filter(t => t.id !== currentThread.id));
+        
+        // Switch to another thread or create new one
+        const remainingThreads = threads.filter(t => t.id !== currentThread.id);
+        if (remainingThreads.length > 0) {
+          await switchThread(remainingThreads[0]);
+        } else {
+          await createNewThread();
+        }
+      } catch (error) {
+        console.error('Failed to delete thread:', error);
+      }
     }
   };
 
-  const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString('en-GB', {
+  const formatTime = (createdAt: string) => {
+    return new Date(createdAt).toLocaleTimeString('en-GB', {
       hour: '2-digit',
       minute: '2-digit'
     });
@@ -94,18 +167,32 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
       />
       
       {/* Panel */}
-      <div className="w-full md:w-96 bg-white dark:bg-gray-800 shadow-xl flex flex-col">
+      <div className="w-full md:w-[480px] bg-white dark:bg-gray-800 shadow-xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               OpsCentral Assistant
             </h2>
-            <p className="text-sm text-amber-600 dark:text-amber-400">
-              Coming soon
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-amber-600 dark:text-amber-400">
+                Coming soon
+              </p>
+              {currentThread && (
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  • {currentThread.title}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={createNewThread}
+              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              title="New conversation"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
             <button
               onClick={handleClearConversation}
               className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -122,33 +209,55 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
 
+        {/* Thread List (if multiple threads) */}
+        {threads.length > 1 && (
+          <div className="border-b border-gray-200 dark:border-gray-700 p-2">
+            <div className="flex gap-1 overflow-x-auto">
+              {threads.slice(0, 3).map((thread) => (
+                <button
+                  key={thread.id}
+                  onClick={() => switchThread(thread)}
+                  className={`px-3 py-1 text-xs rounded-full whitespace-nowrap transition-colors ${
+                    currentThread?.id === thread.id
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  }`}
+                >
+                  {thread.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.length === 0 ? (
             <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-              <p className="mb-2">Start a conversation with OpsCentral Assistant</p>
+              <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <p className="mb-2">Start a conversation with the OpsCentral Assistant</p>
               <p className="text-sm">Type a message below to get started</p>
             </div>
           ) : (
             messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                    message.isUser
+                    message.role === 'user'
                       ? 'bg-primary-600 text-white'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
                   }`}
                 >
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-sm">{message.content}</p>
                   <p className={`text-xs mt-1 ${
-                    message.isUser 
+                    message.role === 'user' 
                       ? 'text-primary-100' 
                       : 'text-gray-500 dark:text-gray-400'
                   }`}>
-                    {formatTime(message.timestamp)}
+                    {formatTime(message.createdAt)}
                   </p>
                 </div>
               </div>
@@ -171,14 +280,18 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
             />
             <button
               onClick={handleSendMessage}
-              disabled={!inputText.trim()}
+              disabled={!inputText.trim() || loading}
               className={`px-4 py-2 rounded-lg font-medium transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
-                inputText.trim()
+                inputText.trim() && !loading
                   ? 'bg-primary-600 hover:bg-primary-700 text-white'
                   : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
               }`}
             >
-              <Send className="w-4 h-4" />
+              {loading ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Send className="w-4 h-4" />
+              )}
             </button>
           </div>
         </div>

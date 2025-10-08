@@ -49,4 +49,10 @@ export const store: DataStore = {
       return fallback.addBooking(b); 
     } 
   },
+  async listChatThreads(){ try { return await primary.listChatThreads(); } catch { return fallback.listChatThreads(); } },
+  async addChatThread(t){ try { return await primary.addChatThread(t); } catch { return fallback.addChatThread(t); } },
+  async updateChatThread(id,u){ try { return await primary.updateChatThread(id,u); } catch { return fallback.updateChatThread(id,u); } },
+  async deleteChatThread(id){ try { return await primary.deleteChatThread(id); } catch { return fallback.deleteChatThread(id); } },
+  async listChatMessages(tid){ try { return await primary.listChatMessages(tid); } catch { return fallback.listChatMessages(tid); } },
+  async addChatMessage(m){ try { return await primary.addChatMessage(m); } catch { return fallback.addChatMessage(m); } },
 };

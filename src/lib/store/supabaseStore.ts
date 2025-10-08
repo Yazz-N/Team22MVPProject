@@ -1,5 +1,5 @@
 import { supabase } from "../supabaseClient";
-import { DataStore, Flow, Activity, Booking } from "./types";
+import { DataStore, Flow, Activity, Booking, ChatThread, ChatMessage } from "./types";
 
 export const supabaseStore: DataStore = {
   async listFlows() { 
@@ -22,4 +22,10 @@ export const supabaseStore: DataStore = {
   async addBooking(b) { 
     await supabase.from("bookings").insert(b); 
   },
+  async listChatThreads(){ const { data } = await supabase.from("chat_threads").select("*").order("updatedAt",{ascending:false}); return (data??[]) as ChatThread[]; },
+  async addChatThread(thread){ await supabase.from("chat_threads").insert(thread); },
+  async updateChatThread(id, updates){ await supabase.from("chat_threads").update({...updates,updatedAt:new Date().toISOString()}).eq("id", id); },
+  async deleteChatThread(id){ await supabase.from("chat_threads").delete().eq("id", id); },
+  async listChatMessages(threadId){ const { data } = await supabase.from("chat_messages").select("*").eq("threadId",threadId).order("createdAt",{ascending:true}); return (data??[]) as ChatMessage[]; },
+  async addChatMessage(message){ await supabase.from("chat_messages").insert(message); },
 };
