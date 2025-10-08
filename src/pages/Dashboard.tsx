@@ -102,7 +102,7 @@ const Dashboard = () => {
     const newActivity: Activity = {
       id: Date.now().toString(),
       message,
-      createdAt: new Date().toISOString()
+      created_at: new Date().toISOString()
     };
     
     try {
@@ -174,7 +174,7 @@ const Dashboard = () => {
     const newFlow: Flow = {
       id: Date.now().toString(),
       filename: selectedFile.name,
-      createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
       status: 'Draft'
     };
 
@@ -220,7 +220,7 @@ const Dashboard = () => {
     const newFlow: Flow = {
       id: Date.now().toString(),
       filename: `${templateName} Template`,
-      createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
       status: 'Draft'
     };
 
@@ -478,7 +478,7 @@ const Dashboard = () => {
                             </span>
                           </td>
                           <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
-                            {formatRelativeTime(flow.createdAt)}
+                            {formatRelativeTime(flow.created_at)}
                           </td>
                           <td className="py-3 px-4">
                             <div className="flex gap-2">
@@ -526,7 +526,7 @@ const Dashboard = () => {
                       <div className="flex-1">
                         <p className="text-gray-900 dark:text-white">{activity.message}</p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {formatRelativeTime(activity.createdAt)}
+                          {formatRelativeTime(activity.created_at)}
                         </p>
                       </div>
                     </div>

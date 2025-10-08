@@ -47,12 +47,12 @@ export const localStore: DataStore = {
     const threads = read<ChatThread[]>(TKEY, []).filter(t => t.id !== id);
     write(TKEY, threads);
     // Also delete messages for this thread
-    const messages = read<ChatMessage[]>(MKEY, []).filter(m => m.threadId !== id);
+    const messages = read<ChatMessage[]>(MKEY, []).filter(m => m.thread_id !== id);
     write(MKEY, messages);
   },
-  async listChatMessages(threadId) {
+  async listChatMessages(thread_id) {
     const all = read<ChatMessage[]>(MKEY, []);
-    return all.filter(m => m.threadId === threadId);
+    return all.filter(m => m.thread_id === thread_id);
   },
   async addChatMessage(message) {
     const all = read<ChatMessage[]>(MKEY, []);

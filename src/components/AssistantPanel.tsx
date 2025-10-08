@@ -21,6 +21,12 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToastMessage = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   // Load thread and messages on open
   useEffect(() => {
@@ -68,11 +74,11 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
 
     const message: ChatMessage = {
       id: crypto.randomUUID(),
-      threadId: currentThread.id,
-      userId,
+      thread_id: currentThread.id,
+      user_id: userId,
       role,
       content,
-      createdAt: new Date().toISOString()
+      created_at: new Date().toISOString()
     };
 
     try {
@@ -200,7 +206,7 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
       exportText += `User: ${userDisplay}\n\n`;
       
       threadMessages.forEach(message => {
-        const timestamp = new Date(message.createdAt).toLocaleString('en-GB', {
+        const timestamp = new Date(message.created_at).toLocaleString('en-GB', {
           hour12: false,
           day: '2-digit',
           month: '2-digit',
@@ -224,7 +230,7 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
       showToastMessage('Chat exported successfully');
     } catch (error) {
       console.error('Failed to export conversation:', error);
-    }
+      showToastMessage('Export failed', 'error');
   };
 
   const formatTime = (createdAt: string) => {
@@ -344,7 +350,7 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
                               ? 'text-primary-100' 
                               : 'text-gray-500 dark:text-gray-400'
                           }`}>
-                            {formatTime(message.createdAt)}
+                            {formatTime(message.created_at)}
                           </p>
                         </div>
                       </div>
@@ -427,6 +433,15 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
       </div>
+
+      {/* Toast */}
+      {toast && (
+        <div className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 ${
+          toast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+        }`}>
+          {toast.message}
+        </div>
+      )}
     </div>
   );
 };
