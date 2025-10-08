@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, RotateCcw, Plus, MessageSquare } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Send, RotateCcw, FileText, Activity, Calendar, MessageSquare } from 'lucide-react';
+import { chatStore } from '../lib/chat';
 import { store } from '../lib/store';
-import type { ChatThread, ChatMessage } from '../lib/store/types';
+import { supabase } from '../lib/supabaseClient';
+import { supabaseConfigured } from '../lib/env';
+import type { ChatThread, ChatMessage } from '../lib/chat/types';
 
 interface AssistantPanelProps {
   isOpen: boolean;
@@ -9,38 +13,42 @@ interface AssistantPanelProps {
 }
 
 const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
-  const [threads, setThreads] = useState<ChatThread[]>([]);
+  const navigate = useNavigate();
   const [currentThread, setCurrentThread] = useState<ChatThread | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Load threads and messages on mount
+  // Load thread and messages on open
   useEffect(() => {
-    const loadData = async () => {
+    const loadChat = async () => {
       if (!isOpen) return;
       
       try {
-        const threadsData = await store.listChatThreads();
-        setThreads(threadsData);
-        
-        // Load the most recent thread or create a new one
-        if (threadsData.length > 0) {
-          const latestThread = threadsData[0];
-          setCurrentThread(latestThread);
-          const messagesData = await store.listChatMessages(latestThread.id);
-          setMessages(messagesData);
-        } else {
-          await createNewThread();
+        // Get current user
+        let currentUserId: string | null = null;
+        if (supabaseConfigured && supabase) {
+          const { data } = await supabase.auth.getSession();
+          currentUserId = data?.session?.user?.id || null;
         }
+        setUserId(currentUserId);
+
+        // Get or create thread
+        const thread = await chatStore.getOrCreateThreadForUser(currentUserId);
+        setCurrentThread(thread);
+
+        // Load messages
+        const threadMessages = await chatStore.listMessages(thread.id);
+        setMessages(threadMessages);
       } catch (error) {
-        console.error('Failed to load chat data:', error);
+        console.error('Failed to load chat:', error);
       }
     };
 
-    loadData();
+    loadChat();
   }, [isOpen]);
 
   // Scroll to bottom when messages change
@@ -55,70 +63,89 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const createNewThread = async () => {
-    const newThread: ChatThread = {
-      id: Date.now().toString(),
-      title: 'New Conversation',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+  const addMessage = async (role: 'user' | 'assistant' | 'system', content: string) => {
+    if (!currentThread) return;
 
-    try {
-      await store.addChatThread(newThread);
-      setThreads(prev => [newThread, ...prev]);
-      setCurrentThread(newThread);
-      setMessages([]);
-    } catch (error) {
-      console.error('Failed to create new thread:', error);
-    }
-  };
-
-  const switchThread = async (thread: ChatThread) => {
-    setCurrentThread(thread);
-    try {
-      const messagesData = await store.listChatMessages(thread.id);
-      setMessages(messagesData);
-    } catch (error) {
-      console.error('Failed to load messages:', error);
-      setMessages([]);
-    }
-  };
-
-  const handleSendMessage = () => {
-    if (!inputText.trim() || !currentThread || loading) return;
-
-    setLoading(true);
-
-    const newMessage: ChatMessage = {
-      id: Date.now().toString(),
+    const message: ChatMessage = {
+      id: crypto.randomUUID(),
       threadId: currentThread.id,
-      role: 'user',
-      content: inputText.trim(),
+      userId,
+      role,
+      content,
       createdAt: new Date().toISOString()
     };
 
-    const saveMessage = async () => {
-      try {
-        await store.addChatMessage(newMessage);
-        setMessages(prev => [...prev, newMessage]);
-        
-        // Update thread title if it's the first message
-        if (messages.length === 0) {
-          const title = inputText.trim().slice(0, 50) + (inputText.trim().length > 50 ? '...' : '');
-          await store.updateChatThread(currentThread.id, { title });
-          setThreads(prev => prev.map(t => t.id === currentThread.id ? { ...t, title } : t));
-          setCurrentThread(prev => prev ? { ...prev, title } : null);
-        }
-        
-        setInputText('');
-      } catch (error) {
-        console.error('Failed to save message:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    try {
+      await chatStore.addMessage(message);
+      setMessages(prev => [...prev, message]);
+    } catch (error) {
+      console.error('Failed to save message:', error);
+    }
+  };
 
-    saveMessage();
+  const handleQuickAction = async (action: string) => {
+    setLoading(true);
+    
+    try {
+      // Add user message
+      await addMessage('user', action);
+
+      // Generate assistant response based on action
+      let response = '';
+      
+      if (action === 'View my last uploaded document') {
+        const flows = await store.listFlows();
+        if (flows.length > 0) {
+          const latest = flows[0];
+          response = `Your most recent document is "${latest.filename}", uploaded ${new Date(latest.createdAt).toLocaleDateString('en-GB')}. Status: ${latest.status}.`;
+        } else {
+          response = 'You haven\'t uploaded any documents yet. Visit the Dashboard to get started.';
+        }
+      } else if (action === 'Update my process flow') {
+        response = 'I can help you update your process flows. Click the button below to go to your Dashboard.';
+      } else if (action === 'Check my recent activity') {
+        const activities = await store.listActivity();
+        if (activities.length > 0) {
+          const recent = activities.slice(0, 3);
+          response = `Here are your recent activities:\n\n${recent.map(a => `• ${a.message}`).join('\n')}`;
+        } else {
+          response = 'No recent activity found. Start by uploading a document or creating a process flow.';
+        }
+      } else if (action === 'Book a support call') {
+        response = 'I\'d be happy to help you book a support call. Click the button below to schedule a time that works for you.';
+      } else if (action === 'Something else…') {
+        response = 'Please type your question or request in the message box below, and I\'ll do my best to help.';
+        setTimeout(() => inputRef.current?.focus(), 100);
+      }
+
+      // Add assistant response
+      await addMessage('assistant', response);
+    } catch (error) {
+      console.error('Failed to handle quick action:', error);
+      await addMessage('assistant', 'Sorry, I encountered an error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputText.trim() || loading) return;
+
+    const message = inputText.trim().slice(0, 250);
+    setInputText('');
+    setLoading(true);
+
+    try {
+      // Add user message
+      await addMessage('user', message);
+      
+      // Add assistant acknowledgement
+      await addMessage('assistant', 'Thanks — the team will review and get back to you.');
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -131,22 +158,31 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
   const handleClearConversation = async () => {
     if (!currentThread) return;
     
-    if (window.confirm('Are you sure you want to delete this conversation?')) {
+    if (window.confirm('Are you sure you want to clear this conversation?')) {
       try {
-        await store.deleteChatThread(currentThread.id);
-        setThreads(prev => prev.filter(t => t.id !== currentThread.id));
+        await chatStore.clearThread(currentThread.id);
         
-        // Switch to another thread or create new one
-        const remainingThreads = threads.filter(t => t.id !== currentThread.id);
-        if (remainingThreads.length > 0) {
-          await switchThread(remainingThreads[0]);
-        } else {
-          await createNewThread();
-        }
+        // Reload messages
+        const threadMessages = await chatStore.listMessages(currentThread.id);
+        setMessages(threadMessages);
       } catch (error) {
-        console.error('Failed to delete thread:', error);
+        console.error('Failed to clear conversation:', error);
       }
     }
+  };
+
+  const navigateToDashboard = (tab?: string) => {
+    onClose();
+    if (tab === 'flows') {
+      navigate('/dashboard?tab=flows');
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
+  const navigateToBooking = () => {
+    onClose();
+    navigate('/book');
   };
 
   const formatTime = (createdAt: string) => {
@@ -155,6 +191,14 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
       minute: '2-digit'
     });
   };
+
+  const quickActions = [
+    { label: 'View my last uploaded document', icon: FileText },
+    { label: 'Update my process flow', icon: FileText },
+    { label: 'Check my recent activity', icon: Activity },
+    { label: 'Book a support call', icon: Calendar },
+    { label: 'Something else…', icon: MessageSquare }
+  ];
 
   if (!isOpen) return null;
 
@@ -174,25 +218,11 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               OpsCentral Assistant
             </h2>
-            <div className="flex items-center gap-2">
-              <p className="text-sm text-amber-600 dark:text-amber-400">
-                Coming soon
-              </p>
-              {currentThread && (
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  • {currentThread.title}
-                </span>
-              )}
-            </div>
+            <p className="text-sm text-amber-600 dark:text-amber-400">
+              Coming soon
+            </p>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={createNewThread}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-              title="New conversation"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
             <button
               onClick={handleClearConversation}
               className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -209,61 +239,103 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Thread List (if multiple threads) */}
-        {threads.length > 1 && (
-          <div className="border-b border-gray-200 dark:border-gray-700 p-2">
-            <div className="flex gap-1 overflow-x-auto">
-              {threads.slice(0, 3).map((thread) => (
-                <button
-                  key={thread.id}
-                  onClick={() => switchThread(thread)}
-                  className={`px-3 py-1 text-xs rounded-full whitespace-nowrap transition-colors ${
-                    currentThread?.id === thread.id
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {thread.title}
-                </button>
-              ))}
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {/* Intro */}
+          <div className="text-center py-4">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              How can I help today?
+            </h3>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Quick actions:
+            </h4>
+            <div className="grid gap-2">
+              {quickActions.map((action) => {
+                const IconComponent = action.icon;
+                return (
+                  <button
+                    key={action.label}
+                    onClick={() => handleQuickAction(action.label)}
+                    disabled={loading}
+                    className="flex items-center gap-3 p-3 text-left bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <IconComponent className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                    <span className="text-sm text-gray-900 dark:text-white">
+                      {action.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        )}
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.length === 0 ? (
-            <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-              <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p className="mb-2">Start a conversation with the OpsCentral Assistant</p>
-              <p className="text-sm">Type a message below to get started</p>
-            </div>
-          ) : (
-            messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                    message.role === 'user'
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                  }`}
-                >
-                  <p className="text-sm">{message.content}</p>
-                  <p className={`text-xs mt-1 ${
-                    message.role === 'user' 
-                      ? 'text-primary-100' 
-                      : 'text-gray-500 dark:text-gray-400'
-                  }`}>
-                    {formatTime(message.createdAt)}
-                  </p>
-                </div>
+          {/* Messages */}
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+            {messages.length === 0 ? (
+              <div className="text-center text-gray-500 dark:text-gray-400 py-4">
+                <p className="text-sm">Your conversation will appear here</p>
               </div>
-            ))
-          )}
-          <div ref={messagesEndRef} />
+            ) : (
+              <div className="space-y-4">
+                {messages.map((message) => (
+                  <div key={message.id}>
+                    {message.role === 'system' ? (
+                      <div className="text-center">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                          {message.content}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                          message.role === 'user'
+                            ? 'bg-primary-600 text-white'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                        }`}>
+                          <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                          <p className={`text-xs mt-1 ${
+                            message.role === 'user' 
+                              ? 'text-primary-100' 
+                              : 'text-gray-500 dark:text-gray-400'
+                          }`}>
+                            {formatTime(message.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Action buttons for specific assistant messages */}
+                    {message.role === 'assistant' && message.content.includes('go to your Dashboard') && (
+                      <div className="flex justify-start mt-2">
+                        <button
+                          onClick={() => navigateToDashboard('flows')}
+                          className="px-3 py-1 text-xs bg-primary-600 hover:bg-primary-700 text-white rounded transition-colors"
+                        >
+                          Go to Dashboard
+                        </button>
+                      </div>
+                    )}
+                    
+                    {message.role === 'assistant' && message.content.includes('schedule a time') && (
+                      <div className="flex justify-start mt-2">
+                        <button
+                          onClick={navigateToBooking}
+                          className="px-3 py-1 text-xs bg-primary-600 hover:bg-primary-700 text-white rounded transition-colors"
+                        >
+                          Open booking page
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
         </div>
 
         {/* Input */}
@@ -275,7 +347,8 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
+              maxLength={250}
+              placeholder="Type a short message (max 250 characters)"
               className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white min-h-[44px]"
             />
             <button
@@ -293,6 +366,11 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
                 <Send className="w-4 h-4" />
               )}
             </button>
+          </div>
+          <div className="mt-1 text-right">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {inputText.length}/250
+            </span>
           </div>
         </div>
       </div>

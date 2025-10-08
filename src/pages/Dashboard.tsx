@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Upload, FileText, Clock, Settings as SettingsIcon, Sparkles, Eye, Trash2, User, LogOut, Sun, Moon, Check, X } from 'lucide-react';
 import { isAuthed, signOut } from '../lib/auth';
 import { store } from '../lib/store';
@@ -9,6 +9,7 @@ import type { Flow, Activity } from '../lib/store/types';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('upload');
   const [loading, setLoading] = useState(true);
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -47,6 +48,15 @@ const Dashboard = () => {
 
     checkAuth();
   }, [navigate]);
+
+  // Handle tab selection from URL params
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    if (tab === 'flows') {
+      setActiveTab('flows');
+    }
+  }, [location.search]);
 
   // Load data
   useEffect(() => {
