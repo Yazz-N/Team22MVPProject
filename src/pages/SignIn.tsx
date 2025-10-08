@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Mail, Lock } from 'lucide-react';
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -54,9 +55,9 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Placeholder for sign-in logic
-      console.log('Sign in attempt:', formData);
-      alert('Sign-in functionality will be implemented with backend integration');
+      // Set temporary auth flag and redirect to dashboard
+      localStorage.setItem('authed', '1');
+      navigate('/dashboard');
     }
   };
 
