@@ -231,6 +231,7 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
     } catch (error) {
       console.error('Failed to export conversation:', error);
       showToastMessage('Export failed', 'error');
+    }
   };
 
   const formatTime = (createdAt: string) => {
