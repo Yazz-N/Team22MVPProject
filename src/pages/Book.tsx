@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Mail, MessageSquare, Check, ArrowLeft, ExternalLink, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { store } from '../lib/store';
+import { makeICS } from '../lib/ics';
+import { EMAIL_API_KEY } from '../lib/env';
 
 interface TimeSlot {
   time: string;
@@ -54,6 +56,7 @@ const Book = () => {
   });
 
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
+  const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   // Scroll to top and focus heading when route becomes /book
   useEffect(() => {
@@ -64,6 +67,10 @@ const Book = () => {
     }
   }, [location.pathname]);
 
+  const showToastMessage = (message: string, type: 'success' | 'error' = 'success') => {
+    setShowToast({ message, type });
+    setTimeout(() => setShowToast(null), 3000);
+  };
   // Common IANA timezones
   const commonTimezones = [
     'Europe/London',
@@ -178,36 +185,8 @@ const Book = () => {
     const checkBookingCollisions = async () => {
       if (!selectedDate || !selectedTimezone || timeSlots.length === 0) return;
 
-      try {
-        const { data: existingBookings, error } = await supabase
-          .from('bookings')
-          .select('utc_start')
-          .eq('status', 'confirmed');
-
-        if (error) {
-          console.error('Error fetching bookings:', error);
-          return;
-        }
-
-        const bookedUtcTimes = new Set(existingBookings.map(booking => booking.utc_start));
-        
-        // Update time slots availability
-        const updatedSlots = timeSlots.map(slot => {
-          if (!slot.available) return slot; // Keep pre-blocked slots as unavailable
-          
-          const slotDateTime = new Date(`${selectedDate}T${slot.time}:00`);
-          const utcStart = convertToUTC(slotDateTime, selectedTimezone).toISOString();
-          
-          return {
-            ...slot,
-            available: !bookedUtcTimes.has(utcStart)
-          };
-        });
-        
-        setTimeSlots(updatedSlots);
-      } catch (error) {
-        console.error('Error checking booking collisions:', error);
-      }
+      // For now, just use the pre-blocked slots
+      // TODO: Check against actual bookings from store when needed
     };
 
     checkBookingCollisions();
@@ -337,68 +316,74 @@ const Book = () => {
       const localDateTime = new Date(`${selectedDate}T${selectedTime}:00`);
       const utcStart = convertToUTC(localDateTime, selectedTimezone);
 
-      // Check for collision one more time before inserting
-      const { data: existingBooking, error: checkError } = await supabase
-        .from('bookings')
-        .select('id')
-        .eq('utc_start', utcStart.toISOString())
-        .eq('status', 'confirmed')
-        .single();
+      // Save booking via store
+      const bookingId = Date.now().toString();
+      await store.addBooking({
+        id: bookingId,
+        name: formData.fullName,
+        email: formData.email,
+        timezone: selectedTimezone,
+        startIso: utcStart.toISOString()
+      });
 
-      if (checkError && checkError.code !== 'PGRST116') {
-        throw new Error('Error checking for booking conflicts');
+      // Generate calendar invite
+      const icsBlob = makeICS(
+        "OpsCentral Demo",
+        "Meet with OpsCentral team.",
+        utcStart.toISOString()
+      );
+      
+      // Create download link
+      const url = URL.createObjectURL(icsBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'opscentral-demo.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // Send confirmation email if configured
+      if (EMAIL_API_KEY) {
+        try {
+          await fetch("/.netlify/functions/sendBookingEmail", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: formData.email,
+              name: formData.fullName,
+              startIso: utcStart.toISOString(),
+              timezone: selectedTimezone
+            })
+          });
+        } catch (emailError) {
+          console.warn('Email sending failed:', emailError);
+        }
+      } else {
+        showToastMessage("Confirmation email will be enabled once email is configured", "error");
       }
 
-      if (existingBooking) {
-        throw new Error('This time slot is no longer available. Please select another time.');
-      }
-
-      // Insert booking into Supabase
-      const { data: newBooking, error: insertError } = await supabase
-        .from('bookings')
-        .insert({
-          full_name: formData.fullName,
-          email: formData.email,
-          notes: formData.notes || null,
-          pain_points: formData.painPoints,
-          date: selectedDate,
-          time: selectedTime,
-          timezone_selected: selectedTimezone,
-          utc_start: utcStart.toISOString(),
-          duration_minutes: 30,
-          status: 'confirmed'
-        })
-        .select()
-        .single();
-
-      if (insertError) {
-        throw new Error('Failed to create booking. Please try again.');
-      }
-
-      // Convert to expected format
       const booking: Booking = {
-        id: newBooking.id,
-        fullName: newBooking.full_name,
-        email: newBooking.email,
-        notes: newBooking.notes || '',
-        painPoints: newBooking.pain_points,
-        date: newBooking.date,
-        time: newBooking.time,
-        timezoneSelected: newBooking.timezone_selected,
-        utcStart: newBooking.utc_start,
-        durationMinutes: newBooking.duration_minutes,
-        createdAt: newBooking.created_at,
-        status: newBooking.status
+        id: bookingId,
+        fullName: formData.fullName,
+        email: formData.email,
+        notes: formData.notes || '',
+        painPoints: formData.painPoints,
+        date: selectedDate,
+        time: selectedTime,
+        timezoneSelected: selectedTimezone,
+        utcStart: utcStart.toISOString(),
+        durationMinutes: 30,
+        createdAt: new Date().toISOString(),
+        status: 'confirmed'
       };
-
-      // Send confirmation email
-      await sendConfirmationEmail(booking);
-
+      
       setConfirmedBooking(booking);
       setShowSuccess(true);
+      showToastMessage("Booking confirmed! Calendar invite downloaded.");
     } catch (error) {
       console.error('Booking failed:', error);
-      alert(error instanceof Error ? error.message : 'Booking failed. Please try again.');
+      showToastMessage(error instanceof Error ? error.message : 'Booking failed. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -754,6 +739,16 @@ const Book = () => {
           )}
         </div>
       </div>
+
+      {/* Toast */}
+      {showToast && (
+        <div className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 ${
+          showToast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+        }`}>
+          <Check className="w-5 h-5" />
+          {showToast.message}
+        </div>
+      )}
     </div>
   );
 };
