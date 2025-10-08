@@ -1,6 +1,6 @@
 # OpsCentral - Streamlined SOP Platform
 
-A centralised hub that transforms how product managers handle internal workflows, SOP management, and real-time updates.
+A centralised hub that transforms how product managers handle internal workflows, Process Flows, and real-time updates.
 
 ## Features
 
@@ -19,7 +19,7 @@ A centralised hub that transforms how product managers handle internal workflows
 
 ### Email Confirmations
 - **Dual Time Display**: Shows both local time and UTC equivalent
-- **Pain Points Included**: User responses included in confirmation emails
+- **Process Flows Included**: User responses included in confirmation emails
 - **Team Notifications**: Internal team receives copy with all booking details
 - **Calendar Attachments**: ICS files with proper timezone information
 
