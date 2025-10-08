@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Mail, Lock } from 'lucide-react';
+import { signIn } from '../utils/storage';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -55,9 +56,13 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Set temporary auth flag and redirect to dashboard
-      localStorage.setItem('authed', '1');
-      navigate('/dashboard');
+      signIn(formData.email).then(() => {
+        navigate('/dashboard');
+      }).catch(error => {
+        console.error('Sign in failed:', error);
+        // Still navigate for demo purposes
+        navigate('/dashboard');
+      });
     }
   };
 

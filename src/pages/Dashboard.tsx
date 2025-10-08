@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, FileText, Clock, Settings as SettingsIcon, Sparkles, Eye, Trash2, Download, User, LogOut, Sun, Moon, Check, X } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-
-interface ProcessFlow {
-  id: string;
-  filename: string;
-  createdAt: string;
-  status: 'Draft' | 'Published';
-  steps: string[];
-}
-
-interface Activity {
-  id: string;
-  action: string;
-  timestamp: string;
-}
+import { 
+  checkAuth, 
+  signOut, 
+  getProcessFlows, 
+  saveProcessFlow, 
+  deleteProcessFlow, 
+  getActivities, 
+  saveActivity,
+  ProcessFlow,
+  Activity 
+} from '../utils/storage';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -34,48 +30,44 @@ const Dashboard = () => {
 
   // Check authentication on mount
   useEffect(() => {
-    const checkAuth = async () => {
+    const performAuthCheck = async () => {
       try {
-        // Try Supabase auth first
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          setIsAuthenticated(true);
-          setUserEmail(session.user.email || 'user@example.com');
-        } else {
-          // Fallback to localStorage flag
-          const authed = localStorage.getItem('authed');
-          if (authed === '1') {
-            setIsAuthenticated(true);
-            setUserEmail('user@example.com');
-          } else {
-            navigate('/signin');
-            return;
-          }
-        }
-      } catch (error) {
-        // Fallback to localStorage flag
-        const authed = localStorage.getItem('authed');
-        if (authed === '1') {
-          setIsAuthenticated(true);
-          setUserEmail('user@example.com');
+        const { isAuthenticated: authed, email } = await checkAuth();
+        if (authed) {
+          setIsAuthenticated(authed);
+          setUserEmail(email);
         } else {
           navigate('/signin');
           return;
         }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        navigate('/signin');
+        return;
       }
       setLoading(false);
     };
 
-    checkAuth();
+    performAuthCheck();
   }, [navigate]);
 
   // Load data from localStorage
   useEffect(() => {
+    const loadData = async () => {
+      if (isAuthenticated) {
+        try {
+          const flows = await getProcessFlows();
+          const acts = await getActivities();
+          setProcessFlows(flows);
+          setActivities(acts);
+        } catch (error) {
+          console.error('Failed to load data:', error);
+        }
+      }
+    };
+
     if (isAuthenticated) {
-      const flows = JSON.parse(localStorage.getItem('opsFlows') || '[]');
-      const acts = JSON.parse(localStorage.getItem('opsActivity') || '[]');
-      setProcessFlows(flows);
-      setActivities(acts);
+      loadData();
     }
   }, [isAuthenticated]);
 
@@ -104,9 +96,14 @@ const Dashboard = () => {
       action,
       timestamp: new Date().toISOString()
     };
-    const updatedActivities = [newActivity, ...activities];
-    setActivities(updatedActivities);
-    localStorage.setItem('opsActivity', JSON.stringify(updatedActivities));
+    
+    saveActivity(newActivity).then(() => {
+      const updatedActivities = [newActivity, ...activities];
+      setActivities(updatedActivities);
+    }).catch(error => {
+      console.error('Failed to save activity:', error);
+      showToast('Failed to save activity', 'error');
+    });
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,15 +147,21 @@ const Dashboard = () => {
       steps: ['Step 1: Intake', 'Step 2: Review', 'Step 3: Approval', 'Step 4: Publish']
     };
 
-    const updatedFlows = [...processFlows, newFlow];
-    setProcessFlows(updatedFlows);
-    localStorage.setItem('opsFlows', JSON.stringify(updatedFlows));
-
-    addActivity(`Uploaded "${selectedFile.name}" → Draft Process Flow created`);
-    
-    setUploadLoading(false);
-    setShowSuccess(true);
-    showToast('Draft Process Flow created successfully');
+    try {
+      await saveProcessFlow(newFlow);
+      const updatedFlows = [...processFlows, newFlow];
+      setProcessFlows(updatedFlows);
+      
+      addActivity(`Uploaded "${selectedFile.name}" → Draft Process Flow created`);
+      
+      setUploadLoading(false);
+      setShowSuccess(true);
+      showToast('Draft Process Flow created successfully');
+    } catch (error) {
+      console.error('Failed to save process flow:', error);
+      setUploadLoading(false);
+      showToast('Failed to create Process Flow', 'error');
+    }
   };
 
   const handleClear = () => {
@@ -169,11 +172,15 @@ const Dashboard = () => {
   const handleDeleteFlow = (id: string) => {
     const flow = processFlows.find(f => f.id === id);
     if (flow && window.confirm(`Are you sure you want to delete "${flow.filename}"?`)) {
-      const updatedFlows = processFlows.filter(f => f.id !== id);
-      setProcessFlows(updatedFlows);
-      localStorage.setItem('opsFlows', JSON.stringify(updatedFlows));
-      addActivity(`Deleted Process Flow "${flow.filename}"`);
-      showToast('Process Flow deleted');
+      deleteProcessFlow(id).then(() => {
+        const updatedFlows = processFlows.filter(f => f.id !== id);
+        setProcessFlows(updatedFlows);
+        addActivity(`Deleted Process Flow "${flow.filename}"`);
+        showToast('Process Flow deleted');
+      }).catch(error => {
+        console.error('Failed to delete process flow:', error);
+        showToast('Failed to delete Process Flow', 'error');
+      });
     }
   };
 
@@ -186,12 +193,15 @@ const Dashboard = () => {
       steps: ['Step 1: Intake', 'Step 2: Review', 'Step 3: Approval', 'Step 4: Publish']
     };
 
-    const updatedFlows = [...processFlows, newFlow];
-    setProcessFlows(updatedFlows);
-    localStorage.setItem('opsFlows', JSON.stringify(updatedFlows));
-
-    addActivity(`Created Draft Process Flow from ${templateName} template`);
-    showToast('Draft Process Flow created from template');
+    saveProcessFlow(newFlow).then(() => {
+      const updatedFlows = [...processFlows, newFlow];
+      setProcessFlows(updatedFlows);
+      addActivity(`Created Draft Process Flow from ${templateName} template`);
+      showToast('Draft Process Flow created from template');
+    }).catch(error => {
+      console.error('Failed to save template process flow:', error);
+      showToast('Failed to create Process Flow from template', 'error');
+    });
   };
 
   const toggleTheme = () => {
@@ -208,12 +218,13 @@ const Dashboard = () => {
 
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      await signOut();
+      navigate('/signin');
     } catch (error) {
-      // Fallback for localStorage auth
+      console.error('Sign out failed:', error);
+      // Force navigation even if sign out fails
+      navigate('/signin');
     }
-    localStorage.removeItem('authed');
-    navigate('/signin');
   };
 
   const formatFileSize = (bytes: number) => {
