@@ -35,6 +35,9 @@ const Dashboard = () => {
     url: string;
   } | null>(null);
 
+  // Dev-only bypass check
+  const isDevBypass = () => import.meta.env.VITE_AUTH_BYPASS === 'true';
+
   // Check authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
@@ -44,7 +47,25 @@ const Dashboard = () => {
         return;
       }
       
-      // Get user email if available
+      // Dev bypass mode - use mock data
+      if (isDevBypass()) {
+        setUserEmail('dev@example.com');
+        setUserProfile({
+          fullName: 'Development User',
+          department: 'Development',
+          lastSignIn: new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        });
+        setLoading(false);
+        return;
+      }
+      
+      // Get user email if available (production mode)
       if (supabaseConfigured && supabase) {
         try {
           const { data } = await supabase.auth.getSession();
