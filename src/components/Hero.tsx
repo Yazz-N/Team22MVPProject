@@ -37,8 +37,7 @@ const Hero = () => {
         </h1>
         
         <p className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-4 max-w-4xl mx-auto leading-relaxed">
-          A centralised hub that transforms how product managers handle internal workflows, 
-          Process Flows, and real-time updates
+          A centralised hub that transforms how product managers handle process flows and real-time updates
         </p>
         
         <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-8 sm:mb-12 max-w-3xl mx-auto">

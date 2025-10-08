@@ -12,7 +12,7 @@ const Footer = () => {
             Transform Your Workflow Today
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Are you ready to revolutionise how your team handles workflows and SOPs?
+            Are you ready to revolutionise how your team handles workflows?
           </p>
           <Link 
             to="/book"
