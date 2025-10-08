@@ -193,7 +193,7 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
 
   const handleExportConversation = async () => {
     if (!currentThread) return;
-
+      const messages = await chatStore.listMessages(thread.id);
     try {
       const threadMessages = await chatStore.listMessages(currentThread.id);
       
@@ -203,10 +203,10 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
       let exportText = `OpsCentral Assistant — Chat Log\n`;
       exportText += `-------------------------------\n`;
       exportText += `Date: ${new Date().toISOString()}\n`;
-      exportText += `User: ${userDisplay}\n\n`;
+        `User: ${thread.userid || 'guest'}`,
       
       threadMessages.forEach(message => {
-        const timestamp = new Date(message.created_at).toLocaleString('en-GB', {
+          const timestamp = new Date(msg.createdat).toLocaleString('en-GB', {
           hour12: false,
           day: '2-digit',
           month: '2-digit',

@@ -1,14 +1,14 @@
 export type Flow = { 
   id: string; 
   filename: string; 
-  created_at: string; 
+  createdat: string; 
   status: "Draft" | "Active" | "Archived" 
 };
 
 export type Activity = { 
   id: string; 
   message: string; 
-  created_at: string 
+  createdat: string 
 };
 
 export type Booking = { 
@@ -16,24 +16,24 @@ export type Booking = {
   name: string; 
   email: string; 
   timezone: string; 
-  start_iso: string 
+  startiso: string 
 };
 
 export type ChatThread = { 
   id: string; 
-  user_id?: string; 
+  userid?: string; 
   title: string; 
-  created_at: string; 
-  updated_at: string; 
+  createdat: string; 
+  updatedat: string; 
 };
 
 export type ChatMessage = { 
   id: string; 
-  thread_id: string; 
-  user_id?: string; 
+  threadid: string; 
+  userid?: string; 
   role: 'user' | 'assistant' | 'system'; 
   content: string; 
-  created_at: string; 
+  createdat: string; 
 };
 
 export interface DataStore {
@@ -47,6 +47,6 @@ export interface DataStore {
   addChatThread(thread: ChatThread): Promise<void>;
   updateChatThread(id: string, updates: Partial<ChatThread>): Promise<void>;
   deleteChatThread(id: string): Promise<void>;
-  listChatMessages(thread_id: string): Promise<ChatMessage[]>;
+  listChatMessages(threadid: string): Promise<ChatMessage[]>;
   addChatMessage(message: ChatMessage): Promise<void>;
 }

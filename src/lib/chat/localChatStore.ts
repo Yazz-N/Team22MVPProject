@@ -7,34 +7,34 @@ const read = <T>(k:string,d:T)=>JSON.parse(localStorage.getItem(k) ?? JSON.strin
 const write=(k:string,v:unknown)=>localStorage.setItem(k, JSON.stringify(v));
 
 export const localChatStore = {
-  async getOrCreateThreadForUser(user_id: string | null): Promise<ChatThread> {
+  async getOrCreateThreadForUser(userid: string | null): Promise<ChatThread> {
     const threads = read<ChatThread[]>(TKEY, []);
-    let th = threads.find(t => t.user_id === user_id) ?? threads[0];
+    let th = threads.find(t => t.userid === userid) ?? threads[0];
     if (!th) {
-      th = { id: crypto.randomUUID(), user_id, title: "Assistant", created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+      th = { id: crypto.randomUUID(), userid, title: "Assistant", createdat: new Date().toISOString(), updatedat: new Date().toISOString() };
       threads.unshift(th); write(TKEY, threads);
     }
     return th;
   },
-  async listMessages(thread_id: string): Promise<ChatMessage[]> {
+  async listMessages(threadid: string): Promise<ChatMessage[]> {
     const all = read<ChatMessage[]>(MKEY, []);
-    return all.filter(m => m.thread_id === thread_id).sort((a,b)=>a.created_at.localeCompare(b.created_at));
+    return all.filter(m => m.threadid === threadid).sort((a,b)=>a.createdat.localeCompare(b.createdat));
   },
   async addMessage(m: ChatMessage): Promise<void> {
     const all = read<ChatMessage[]>(MKEY, []); all.push(m); write(MKEY, all);
     const threads = read<ChatThread[]>(TKEY, []);
-    const idx = threads.findIndex(t=>t.id===m.thread_id);
-    if (idx>=0){ threads[idx].updated_at = m.created_at; write(TKEY, threads); }
+    const idx = threads.findIndex(t=>t.id===m.threadid);
+    if (idx>=0){ threads[idx].updatedat = m.createdat; write(TKEY, threads); }
   },
-  async clearThread(thread_id: string): Promise<void> {
+  async clearThread(threadid: string): Promise<void> {
     // For MVP, add a system message instead of deleting
     const clearMessage: ChatMessage = {
       id: crypto.randomUUID(),
-      thread_id,
-      user_id: null,
+      threadid,
+      userid: null,
       role: "system",
       content: "Conversation cleared",
-      created_at: new Date().toISOString()
+      createdat: new Date().toISOString()
     };
     await this.addMessage(clearMessage);
   },
