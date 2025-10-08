@@ -64,11 +64,14 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // In dev bypass mode, skip validation and go directly to dashboard
+    setLoading(true);
+    
     if (isDevBypass()) {
-      setLoading(true);
-      signInWithEmail(formData.email, formData.password).then(() => {
+      // In dev bypass mode, skip validation and go directly to dashboard
+      signInWithEmail('dev@example.com', 'password').then(() => {
         navigate('/dashboard');
+      }).catch(() => {
+        navigate('/dashboard'); // Force navigation even if there's an error
       }).finally(() => {
         setLoading(false);
       });
@@ -77,7 +80,6 @@ const SignIn = () => {
     
     // Normal validation and sign-in flow
     if (validateForm()) {
-      setLoading(true);
       signInWithEmail(formData.email, formData.password).then((result) => {
         if (result.error) {
           setErrors({

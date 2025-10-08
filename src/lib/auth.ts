@@ -23,7 +23,7 @@ export async function signInWithEmail(email: string, password: string) {
   // Dev bypass - simulate successful sign-in
   if (isDevBypass()) {
     localStorage.setItem(KEY, "1");
-    return { data: { user: { email: "dev@example.com" } }, error: null };
+    return Promise.resolve({ data: { user: { email: "dev@example.com" } }, error: null });
   }
   
   if (supabaseConfigured && supabase) {

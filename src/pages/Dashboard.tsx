@@ -38,30 +38,37 @@ const Dashboard = () => {
   // Dev-only bypass check
   const isDevBypass = () => import.meta.env.VITE_AUTH_BYPASS === 'true';
 
+  // Check if we're in dev bypass mode first
+  useEffect(() => {
+    if (isDevBypass()) {
+      setUserEmail('dev@example.com');
+      setUserProfile({
+        fullName: 'Development User',
+        department: 'Development',
+        lastSignIn: new Date().toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      });
+      setLoading(false);
+      return;
+    }
+  }, []);
+
   // Check authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
-      const authed = await isAuthed();
-      if (!authed) {
-        navigate('/signin');
+      // Skip auth check if we're in dev bypass mode
+      if (isDevBypass()) {
         return;
       }
       
-      // Dev bypass mode - use mock data
-      if (isDevBypass()) {
-        setUserEmail('dev@example.com');
-        setUserProfile({
-          fullName: 'Development User',
-          department: 'Development',
-          lastSignIn: new Date().toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          })
-        });
-        setLoading(false);
+      const authed = await isAuthed();
+      if (!authed) {
+        navigate('/signin');
         return;
       }
       
