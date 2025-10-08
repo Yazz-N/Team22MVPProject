@@ -185,6 +185,48 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
     navigate('/book');
   };
 
+  const handleExportConversation = async () => {
+    if (!currentThread) return;
+
+    try {
+      const threadMessages = await chatStore.listMessages(currentThread.id);
+      
+      const today = new Date().toISOString().split('T')[0];
+      const userDisplay = userId || 'guest';
+      
+      let exportText = `OpsCentral Assistant — Chat Log\n`;
+      exportText += `-------------------------------\n`;
+      exportText += `Date: ${new Date().toISOString()}\n`;
+      exportText += `User: ${userDisplay}\n\n`;
+      
+      threadMessages.forEach(message => {
+        const timestamp = new Date(message.createdAt).toLocaleString('en-GB', {
+          hour12: false,
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        exportText += `[${timestamp}] ${message.role}: ${message.content}\n`;
+      });
+      
+      const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `OpsCentral_Chat_${today}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToastMessage('Chat exported successfully');
+    } catch (error) {
+      console.error('Failed to export conversation:', error);
+    }
+  };
+
   const formatTime = (createdAt: string) => {
     return new Date(createdAt).toLocaleTimeString('en-GB', {
       hour: '2-digit',
@@ -371,6 +413,17 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
             <span className="text-xs text-gray-500 dark:text-gray-400">
               {inputText.length}/250
             </span>
+          </div>
+          
+          {/* Export Conversation Button */}
+          <div className="mt-3">
+            <button
+              onClick={handleExportConversation}
+              title="Download your chat history as a text file"
+              className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors min-h-[44px] text-sm"
+            >
+              Export Conversation (.txt)
+            </button>
           </div>
         </div>
       </div>
