@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Upload, FileText, Clock, Settings as SettingsIcon, Sparkles, Eye, Trash2, User, LogOut, Sun, Moon, Check, X } from 'lucide-react';
+import { Upload, FileText, Clock, Settings as SettingsIcon, Sparkles, Eye, Trash2, User, LogOut, Sun, Moon, Check, X, Calendar, Download } from 'lucide-react';
 import { isAuthed, signOut } from '../lib/auth';
 import { store } from '../lib/store';
 import { supabase } from '../lib/supabaseClient';
@@ -21,6 +21,19 @@ const Dashboard = () => {
   const [isDark, setIsDark] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [userEmail, setUserEmail] = useState('');
+  const [userProfile, setUserProfile] = useState<{
+    fullName: string;
+    department: string;
+    lastSignIn: string;
+  }>({
+    fullName: '',
+    department: 'Unassigned',
+    lastSignIn: ''
+  });
+  const [recentDocument, setRecentDocument] = useState<{
+    name: string;
+    url: string;
+  } | null>(null);
 
   // Check authentication on mount
   useEffect(() => {
@@ -35,12 +48,62 @@ const Dashboard = () => {
       if (supabaseConfigured && supabase) {
         try {
           const { data } = await supabase.auth.getSession();
-          setUserEmail(data?.session?.user?.email || 'Signed-in user');
+          const user = data?.session?.user;
+          setUserEmail(user?.email || 'Signed-in user');
+          
+          // Set user profile information
+          setUserProfile({
+            fullName: user?.user_metadata?.full_name || user?.email || 'User',
+            department: user?.user_metadata?.department || 'Unassigned',
+            lastSignIn: user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            }) : 'Unknown'
+          });
+          
+          // Try to fetch most recent document from storage
+          try {
+            const { data: files } = await supabase.storage
+              .from('documents')
+              .list(user?.email || 'anon', {
+                limit: 1,
+                sortBy: { column: 'created_at', order: 'desc' }
+              });
+            
+            if (files && files.length > 0) {
+              const file = files[0];
+              const { data: urlData } = await supabase.storage
+                .from('documents')
+                .createSignedUrl(`${user?.email || 'anon'}/${file.name}`, 3600);
+              
+              if (urlData) {
+                setRecentDocument({
+                  name: file.name.replace(/^\d+-/, ''), // Remove timestamp prefix
+                  url: urlData.signedUrl
+                });
+              }
+            }
+          } catch (storageError) {
+            console.warn('Could not fetch recent document:', storageError);
+          }
         } catch {
           setUserEmail('Signed-in user');
+          setUserProfile({
+            fullName: 'User',
+            department: 'Unassigned',
+            lastSignIn: 'Unknown'
+          });
         }
       } else {
         setUserEmail('Signed-in user');
+        setUserProfile({
+          fullName: 'User',
+          department: 'Unassigned',
+          lastSignIn: 'Unknown'
+        });
       }
       
       setLoading(false);
@@ -277,6 +340,7 @@ const Dashboard = () => {
   };
 
   const tabs = [
+    { id: 'overview', label: 'Overview', icon: User },
     { id: 'upload', label: 'Upload Document', icon: Upload },
     { id: 'flows', label: 'My Process Flows', icon: FileText },
     { id: 'activity', label: 'Recent Activity', icon: Clock },
@@ -342,6 +406,135 @@ const Dashboard = () => {
 
         {/* Tab Content */}
         <div role="tabpanel">
+          {activeTab === 'overview' && (
+            <div className="space-y-8">
+              {/* User Profile Header */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                  Welcome back, {userProfile.fullName}
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</h3>
+                    <p className="text-gray-900 dark:text-white">{userProfile.fullName}</p>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department</h3>
+                    <p className="text-gray-900 dark:text-white">{userProfile.department}</p>
+                  </div>
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Last Sign In</h3>
+                    <p className="text-gray-900 dark:text-white">{userProfile.lastSignIn}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                  Quick Actions
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <button
+                    onClick={() => setActiveTab('flows')}
+                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
+                  >
+                    <FileText className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3 group-hover:scale-110 transition-transform" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Update a Process Flow</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Manage your existing process flows</p>
+                  </button>
+                  
+                  <div className="group p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <FileText className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Last Uploaded Document</h3>
+                    {recentDocument ? (
+                      <div>
+                        <p className="text-sm text-gray-900 dark:text-white mb-2">{recentDocument.name}</p>
+                        <a
+                          href={recentDocument.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                        >
+                          <Download className="w-4 h-4" />
+                          View/Download
+                        </a>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-600 dark:text-gray-400">None yet</p>
+                    )}
+                  </div>
+                  
+                  <button
+                    onClick={() => navigate('/book')}
+                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
+                  >
+                    <Calendar className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3 group-hover:scale-110 transition-transform" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Book a Support Call</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Schedule time with our team</p>
+                  </button>
+                </div>
+              </div>
+
+              {/* Recent Activity & Version History */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Recent Activity */}
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                    Recent Activity
+                  </h2>
+                  
+                  {activities.length === 0 ? (
+                    <p className="text-gray-600 dark:text-gray-400">None yet</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {activities.slice(0, 5).map((activity) => (
+                        <div key={activity.id} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                          <div className="w-2 h-2 bg-primary-600 rounded-full mt-2"></div>
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-900 dark:text-white">{activity.message}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {formatRelativeTime(activity.created_at)}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Version History */}
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                    Version History
+                  </h2>
+                  
+                  {flows.length === 0 ? (
+                    <p className="text-gray-600 dark:text-gray-400">None yet</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {flows.slice(0, 5).map((flow) => (
+                        <div key={flow.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">{flow.filename}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {formatRelativeTime(flow.created_at)}
+                            </p>
+                          </div>
+                          <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full">
+                            {flow.status}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'upload' && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
