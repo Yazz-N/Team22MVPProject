@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Mail, Lock } from 'lucide-react';
-import { signIn } from '../utils/storage';
+import { signInWithEmail } from '../lib/auth';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -56,12 +56,10 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      signIn(formData.email).then(() => {
+      signInWithEmail(formData.email, formData.password).then(() => {
         navigate('/dashboard');
       }).catch(error => {
         console.error('Sign in failed:', error);
-        // Still navigate for demo purposes
-        navigate('/dashboard');
       });
     }
   };

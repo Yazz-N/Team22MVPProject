@@ -1,75 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, FileText, Clock, Settings as SettingsIcon, Sparkles, Eye, Trash2, Download, User, LogOut, Sun, Moon, Check, X } from 'lucide-react';
-import { 
-  checkAuth, 
-  signOut, 
-  getProcessFlows, 
-  saveProcessFlow, 
-  deleteProcessFlow, 
-  getActivities, 
-  saveActivity,
-  ProcessFlow,
-  Activity 
-} from '../utils/storage';
+import { Upload, FileText, Clock, Settings as SettingsIcon, Sparkles, Eye, Trash2, User, LogOut, Sun, Moon, Check, X } from 'lucide-react';
+import { isAuthed, signOut } from '../lib/auth';
+import { store } from '../lib/store';
+import { supabase } from '../lib/supabaseClient';
+import { supabaseConfigured } from '../lib/env';
+import type { Flow, Activity } from '../lib/store/types';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('upload');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
   const [loading, setLoading] = useState(true);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [processFlows, setProcessFlows] = useState<ProcessFlow[]>([]);
+  const [flows, setFlows] = useState<Flow[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [viewingFlow, setViewingFlow] = useState<ProcessFlow | null>(null);
+  const [viewingFlow, setViewingFlow] = useState<Flow | null>(null);
   const [isDark, setIsDark] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [userEmail, setUserEmail] = useState('');
 
   // Check authentication on mount
   useEffect(() => {
-    const performAuthCheck = async () => {
-      try {
-        const { isAuthenticated: authed, email } = await checkAuth();
-        if (authed) {
-          setIsAuthenticated(authed);
-          setUserEmail(email);
-        } else {
-          navigate('/signin');
-          return;
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
+    const checkAuth = async () => {
+      const authed = await isAuthed();
+      if (!authed) {
         navigate('/signin');
         return;
       }
+      
+      // Get user email if available
+      if (supabaseConfigured && supabase) {
+        try {
+          const { data } = await supabase.auth.getSession();
+          setUserEmail(data?.session?.user?.email || 'Signed-in user');
+        } catch {
+          setUserEmail('Signed-in user');
+        }
+      } else {
+        setUserEmail('Signed-in user');
+      }
+      
       setLoading(false);
     };
 
-    performAuthCheck();
+    checkAuth();
   }, [navigate]);
 
-  // Load data from localStorage
+  // Load data
   useEffect(() => {
     const loadData = async () => {
-      if (isAuthenticated) {
-        try {
-          const flows = await getProcessFlows();
-          const acts = await getActivities();
-          setProcessFlows(flows);
-          setActivities(acts);
-        } catch (error) {
-          console.error('Failed to load data:', error);
-        }
+      if (loading) return;
+      
+      try {
+        const [flowsData, activitiesData] = await Promise.all([
+          store.listFlows(),
+          store.listActivity()
+        ]);
+        setFlows(flowsData);
+        setActivities(activitiesData);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+        showToast('Failed to load data', 'error');
       }
     };
 
-    if (isAuthenticated) {
-      loadData();
-    }
-  }, [isAuthenticated]);
+    loadData();
+  }, [loading]);
 
   // Check theme
   useEffect(() => {
@@ -90,20 +88,20 @@ const Dashboard = () => {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const addActivity = (action: string) => {
+  const addActivity = async (message: string) => {
     const newActivity: Activity = {
       id: Date.now().toString(),
-      action,
-      timestamp: new Date().toISOString()
+      message,
+      createdAt: new Date().toISOString()
     };
     
-    saveActivity(newActivity).then(() => {
-      const updatedActivities = [newActivity, ...activities];
-      setActivities(updatedActivities);
-    }).catch(error => {
+    try {
+      await store.addActivity(newActivity);
+      setActivities(prev => [newActivity, ...prev]);
+    } catch (error) {
       console.error('Failed to save activity:', error);
       showToast('Failed to save activity', 'error');
-    });
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,27 +134,51 @@ const Dashboard = () => {
 
     setUploadLoading(true);
     
+    // Upload to Supabase Storage if configured
+    let storageError = false;
+    if (supabaseConfigured && supabase) {
+      try {
+        const timestamp = Date.now();
+        const filename = `${timestamp}-${selectedFile.name}`;
+        const path = `${userEmail || 'anon'}/${filename}`;
+        
+        const { error } = await supabase.storage
+          .from('documents')
+          .upload(path, selectedFile);
+          
+        if (error) {
+          console.error('Storage upload failed:', error);
+          showToast('File upload failed - storage bucket may be missing', 'error');
+          storageError = true;
+        }
+      } catch (error) {
+        console.error('Storage upload error:', error);
+        showToast('File upload failed - storage not available', 'error');
+        storageError = true;
+      }
+    }
+
     // Simulate processing
     await new Promise(resolve => setTimeout(resolve, 2500));
 
-    const newFlow: ProcessFlow = {
+    const newFlow: Flow = {
       id: Date.now().toString(),
       filename: selectedFile.name,
       createdAt: new Date().toISOString(),
-      status: 'Draft',
-      steps: ['Step 1: Intake', 'Step 2: Review', 'Step 3: Approval', 'Step 4: Publish']
+      status: 'Draft'
     };
 
     try {
-      await saveProcessFlow(newFlow);
-      const updatedFlows = [...processFlows, newFlow];
-      setProcessFlows(updatedFlows);
+      await store.addFlow(newFlow);
+      setFlows(prev => [newFlow, ...prev]);
       
-      addActivity(`Uploaded "${selectedFile.name}" → Draft Process Flow created`);
+      await addActivity(`Uploaded "${selectedFile.name}" → Draft Process Flow created`);
       
       setUploadLoading(false);
       setShowSuccess(true);
-      showToast('Draft Process Flow created successfully');
+      if (!storageError) {
+        showToast('Draft Process Flow created successfully');
+      }
     } catch (error) {
       console.error('Failed to save process flow:', error);
       setUploadLoading(false);
@@ -169,39 +191,38 @@ const Dashboard = () => {
     setShowSuccess(false);
   };
 
-  const handleDeleteFlow = (id: string) => {
-    const flow = processFlows.find(f => f.id === id);
+  const handleDeleteFlow = async (id: string) => {
+    const flow = flows.find(f => f.id === id);
     if (flow && window.confirm(`Are you sure you want to delete "${flow.filename}"?`)) {
-      deleteProcessFlow(id).then(() => {
-        const updatedFlows = processFlows.filter(f => f.id !== id);
-        setProcessFlows(updatedFlows);
-        addActivity(`Deleted Process Flow "${flow.filename}"`);
+      try {
+        await store.deleteFlow(id);
+        setFlows(prev => prev.filter(f => f.id !== id));
+        await addActivity(`Deleted Process Flow "${flow.filename}"`);
         showToast('Process Flow deleted');
-      }).catch(error => {
+      } catch (error) {
         console.error('Failed to delete process flow:', error);
         showToast('Failed to delete Process Flow', 'error');
-      });
+      }
     }
   };
 
-  const handleUseTemplate = (templateName: string) => {
-    const newFlow: ProcessFlow = {
+  const handleUseTemplate = async (templateName: string) => {
+    const newFlow: Flow = {
       id: Date.now().toString(),
       filename: `${templateName} Template`,
       createdAt: new Date().toISOString(),
-      status: 'Draft',
-      steps: ['Step 1: Intake', 'Step 2: Review', 'Step 3: Approval', 'Step 4: Publish']
+      status: 'Draft'
     };
 
-    saveProcessFlow(newFlow).then(() => {
-      const updatedFlows = [...processFlows, newFlow];
-      setProcessFlows(updatedFlows);
-      addActivity(`Created Draft Process Flow from ${templateName} template`);
+    try {
+      await store.addFlow(newFlow);
+      setFlows(prev => [newFlow, ...prev]);
+      await addActivity(`Created Draft Process Flow from ${templateName} template`);
       showToast('Draft Process Flow created from template');
-    }).catch(error => {
+    } catch (error) {
       console.error('Failed to save template process flow:', error);
       showToast('Failed to create Process Flow from template', 'error');
-    });
+    }
   };
 
   const toggleTheme = () => {
@@ -222,7 +243,6 @@ const Dashboard = () => {
       navigate('/signin');
     } catch (error) {
       console.error('Sign out failed:', error);
-      // Force navigation even if sign out fails
       navigate('/signin');
     }
   };
@@ -267,10 +287,6 @@ const Dashboard = () => {
         <div className="text-gray-600 dark:text-gray-400">Loading...</div>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   return (
@@ -426,7 +442,7 @@ const Dashboard = () => {
                 My Process Flows
               </h2>
 
-              {processFlows.length === 0 ? (
+              {flows.length === 0 ? (
                 <div className="text-center py-12">
                   <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600 dark:text-gray-400">No process flows yet. Upload a document to get started.</p>
@@ -443,7 +459,7 @@ const Dashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {processFlows.map((flow) => (
+                      {flows.map((flow) => (
                         <tr key={flow.id} className="border-b border-gray-100 dark:border-gray-700">
                           <td className="py-3 px-4 text-gray-900 dark:text-white">{flow.filename}</td>
                           <td className="py-3 px-4">
@@ -498,9 +514,9 @@ const Dashboard = () => {
                     <div key={activity.id} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <div className="w-2 h-2 bg-primary-600 rounded-full mt-2"></div>
                       <div className="flex-1">
-                        <p className="text-gray-900 dark:text-white">{activity.action}</p>
+                        <p className="text-gray-900 dark:text-white">{activity.message}</p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {formatRelativeTime(activity.timestamp)}
+                          {formatRelativeTime(activity.createdAt)}
                         </p>
                       </div>
                     </div>
@@ -526,8 +542,8 @@ const Dashboard = () => {
                         <User className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">Signed-in user</p>
-                        <p className="text-gray-600 dark:text-gray-400">{userEmail}</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{userEmail}</p>
+                        <p className="text-gray-600 dark:text-gray-400">Account holder</p>
                       </div>
                     </div>
                   </div>
@@ -612,11 +628,18 @@ const Dashboard = () => {
               </button>
             </div>
             <div className="space-y-2">
-              {viewingFlow.steps.map((step, index) => (
-                <div key={index} className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <span className="text-gray-900 dark:text-white">{step}</span>
-                </div>
-              ))}
+              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <span className="text-gray-900 dark:text-white">Step 1: Intake</span>
+              </div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <span className="text-gray-900 dark:text-white">Step 2: Review</span>
+              </div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <span className="text-gray-900 dark:text-white">Step 3: Approval</span>
+              </div>
+              <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <span className="text-gray-900 dark:text-white">Step 4: Publish</span>
+              </div>
             </div>
           </div>
         </div>
@@ -624,7 +647,9 @@ const Dashboard = () => {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50">
+        <div className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 ${
+          toast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+        }`}>
           <Check className="w-5 h-5" />
           {toast.message}
         </div>
