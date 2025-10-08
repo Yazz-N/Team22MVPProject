@@ -15,6 +15,10 @@ const SignIn = () => {
     password: ''
   });
 
+  const [loading, setLoading] = useState(false);
+
+  // Dev-only bypass check
+  const isDevBypass = () => import.meta.env.VITE_AUTH_BYPASS === 'true';
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -37,6 +41,10 @@ const SignIn = () => {
       password: ''
     };
 
+    // Skip validation in dev bypass mode
+    if (isDevBypass()) {
+      return true;
+    }
     if (!formData.email) {
       newErrors.email = 'Email address is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -56,10 +64,17 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
+      setLoading(true);
       signInWithEmail(formData.email, formData.password).then(() => {
         navigate('/dashboard');
       }).catch(error => {
         console.error('Sign in failed:', error);
+        setErrors({
+          email: '',
+          password: 'Invalid login credentials'
+        });
+      }).finally(() => {
+        setLoading(false);
       });
     }
   };
@@ -75,6 +90,11 @@ const SignIn = () => {
             <p className="text-gray-600 dark:text-gray-400">
               Sign in to your OpsCentral account
             </p>
+            {isDevBypass() && (
+              <p className="text-amber-600 dark:text-amber-400 text-sm mt-2">
+                Development mode: Any credentials will work
+              </p>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -126,9 +146,10 @@ const SignIn = () => {
 
             <button
               type="submit"
+              disabled={loading}
               className="group w-full inline-flex justify-center items-center px-8 py-4 bg-accent-600 hover:bg-accent-700 text-white font-semibold rounded-lg transition-all duration-300 gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
-              Sign In
+              {loading ? 'Signing In...' : 'Sign In'}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
