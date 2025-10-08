@@ -63,10 +63,30 @@ const SignIn = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
+    
+    // In dev bypass mode, skip validation and go directly to dashboard
+    if (isDevBypass()) {
       setLoading(true);
       signInWithEmail(formData.email, formData.password).then(() => {
         navigate('/dashboard');
+      }).finally(() => {
+        setLoading(false);
+      });
+      return;
+    }
+    
+    // Normal validation and sign-in flow
+    if (validateForm()) {
+      setLoading(true);
+      signInWithEmail(formData.email, formData.password).then((result) => {
+        if (result.error) {
+          setErrors({
+            email: '',
+            password: 'Invalid login credentials'
+          });
+        } else {
+          navigate('/dashboard');
+        }
       }).catch(error => {
         console.error('Sign in failed:', error);
         setErrors({
