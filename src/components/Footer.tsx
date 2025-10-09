@@ -12,7 +12,7 @@ const Footer = () => {
             Transform Your Workflow Today
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Are you ready to revolutionise how your team handles workflows and SOPs?
+            Are you ready to revolutionise how your team handles workflows?
           </p>
           <Link 
             to="/book"
@@ -33,8 +33,7 @@ const Footer = () => {
               <span className="text-xl font-bold text-primary-600 dark:text-primary-400">OpsCentral</span>
             </div>
             <p className="text-sm sm:text-base text-gray-700 dark:text-white mb-6 max-w-md">
-              The centralised hub that transforms how product managers handle internal workflows, 
-              SOP management, and real-time updates.
+              A centralised hub that transforms how product managers handle process flows with real-time updates.
             </p>
             <div className="flex flex-wrap gap-3 sm:gap-4">
               <a 

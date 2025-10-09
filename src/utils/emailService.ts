@@ -79,7 +79,7 @@ export const sendBookingConfirmation = async (data: BookingEmailData) => {
         <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin: 20px 0;">
           <h4 style="margin-top: 0;">Your Responses:</h4>
           ${booking.painPoints.workflowChallenge ? `<p><strong>Workflow Challenge:</strong> ${booking.painPoints.workflowChallenge}</p>` : ''}
-          ${booking.painPoints.sopManagement ? `<p><strong>SOP Management:</strong> ${booking.painPoints.sopManagement}</p>` : ''}
+          ${booking.painPoints.sopManagement ? `<p><strong>Process Flows:</strong> ${booking.painPoints.sopManagement}</p>` : ''}
           ${booking.painPoints.mainGoal ? `<p><strong>Main Goal:</strong> ${booking.painPoints.mainGoal}</p>` : ''}
           ${booking.painPoints.limitingTools ? `<p><strong>Limiting Tools:</strong> ${booking.painPoints.limitingTools}</p>` : ''}
           ${booking.painPoints.demoPreparation ? `<p><strong>Demo Preparation:</strong> ${booking.painPoints.demoPreparation}</p>` : ''}
@@ -121,7 +121,7 @@ export const sendBookingConfirmation = async (data: BookingEmailData) => {
         <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin: 20px 0;">
           <h4 style="margin-top: 0;">Pain Points & Responses:</h4>
           ${booking.painPoints.workflowChallenge ? `<p><strong>Workflow Challenge:</strong> ${booking.painPoints.workflowChallenge}</p>` : ''}
-          ${booking.painPoints.sopManagement ? `<p><strong>SOP Management:</strong> ${booking.painPoints.sopManagement}</p>` : ''}
+          ${booking.painPoints.sopManagement ? `<p><strong>Process Flows:</strong> ${booking.painPoints.sopManagement}</p>` : ''}
           ${booking.painPoints.mainGoal ? `<p><strong>Main Goal:</strong> ${booking.painPoints.mainGoal}</p>` : ''}
           ${booking.painPoints.limitingTools ? `<p><strong>Limiting Tools:</strong> ${booking.painPoints.limitingTools}</p>` : ''}
           ${booking.painPoints.demoPreparation ? `<p><strong>Demo Preparation:</strong> ${booking.painPoints.demoPreparation}</p>` : ''}

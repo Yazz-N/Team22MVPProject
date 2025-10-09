@@ -3,11 +3,21 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+let supabase: any = null;
+let supabaseAvailable = false;
+
+try {
+  if (supabaseUrl && supabaseAnonKey) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+    supabaseAvailable = true;
+  }
+} catch (error) {
+  console.warn('Supabase initialisation failed, falling back to localStorage:', error);
+  supabaseAvailable = false;
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export { supabase };
+export const isSupabaseAvailable = () => supabaseAvailable;
 
 export type Database = {
   public: {
