@@ -32,7 +32,7 @@ const Header = () => {
           {/* Desktop CTA and Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            {import.meta.env.VITE_DASHBOARD_ICON === 'true' && (
+            {true && (
               <Link
                 to="/dashboard"
                 className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
@@ -71,7 +71,7 @@ const Header = () => {
               <a href="/#faq" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium">FAQ</a>
               <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                 <ThemeToggle />
-                {import.meta.env.VITE_DASHBOARD_ICON === 'true' && (
+                {true && (
                   <Link
                     to="/dashboard"
                     className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
