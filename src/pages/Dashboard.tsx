@@ -441,21 +441,21 @@ const Dashboard = () => {
           {activeTab === 'overview' && (
             <div className="space-y-8">
               {/* User Profile Header */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                   Welcome back, {userProfile.fullName}
                 </h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-accent-600 dark:border-accent-600 p-4">
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</h3>
                     <p className="text-gray-900 dark:text-white">{userProfile.fullName}</p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-accent-600 dark:border-accent-600 p-4">
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department</h3>
                     <p className="text-gray-900 dark:text-white">{userProfile.department}</p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-accent-600 dark:border-accent-600 p-4">
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Last Sign In</h3>
                     <p className="text-gray-900 dark:text-white">{userProfile.lastSignIn}</p>
                   </div>
@@ -463,7 +463,7 @@ const Dashboard = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                   Quick Actions
                 </h2>
@@ -471,15 +471,15 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   <button
                     onClick={() => setActiveTab('flows')}
-                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-primary-600 dark:border-primary-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
+                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-accent-600 dark:border-accent-600 hover:border-accent-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
                   >
-                    <FileText className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3 group-hover:scale-110 transition-transform" />
+                    <FileText className="w-8 h-8 text-accent-600 dark:text-accent-400 mb-3 group-hover:scale-110 transition-transform" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Update a Process Flow</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Manage your existing process flows</p>
                   </button>
                   
-                  <div className="group p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-primary-600">
-                    <FileText className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3" />
+                  <div className="group p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-accent-600 dark:border-accent-600">
+                    <FileText className="w-8 h-8 text-accent-600 dark:text-accent-400 mb-3" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Last Uploaded Document</h3>
                     {recentDocument ? (
                       <div>
@@ -488,7 +488,7 @@ const Dashboard = () => {
                           href={recentDocument.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                          className="inline-flex items-center gap-1 text-sm text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 transition-colors"
                         >
                           <Download className="w-4 h-4" />
                           View/Download
@@ -501,9 +501,9 @@ const Dashboard = () => {
                   
                   <button
                     onClick={() => navigate('/book')}
-                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-primary-600 dark:border-primary-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
+                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-accent-600 dark:border-accent-600 hover:border-accent-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
                   >
-                    <Calendar className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3 group-hover:scale-110 transition-transform" />
+                    <Calendar className="w-8 h-8 text-accent-600 dark:text-accent-400 mb-3 group-hover:scale-110 transition-transform" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Book a Support Call</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Schedule time with our team</p>
                   </button>
@@ -513,7 +513,7 @@ const Dashboard = () => {
               {/* Recent Activity & Version History */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Recent Activity */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                     Recent Activity
                   </h2>
@@ -524,7 +524,7 @@ const Dashboard = () => {
                     <div className="space-y-4">
                       {activities.slice(0, 5).map((activity) => (
                         <div key={activity.id} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                          <div className="w-2 h-2 bg-primary-600 rounded-full mt-2"></div>
+                          <div className="w-2 h-2 bg-accent-600 rounded-full mt-2"></div>
                           <div className="flex-1">
                             <p className="text-sm text-gray-900 dark:text-white">{activity.message}</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -538,7 +538,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Version History */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                     Version History
                   </h2>
@@ -568,7 +568,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'upload' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 Upload a document to generate your process flow
               </h2>
@@ -585,7 +585,7 @@ const Dashboard = () => {
                     <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
                       Drop your document here, or
                     </p>
-                    <label className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg cursor-pointer transition-colors min-h-[44px]">
+                    <label className="inline-flex items-center px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg cursor-pointer transition-colors min-h-[44px]">
                       Choose file
                       <input
                         type="file"
@@ -672,7 +672,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'flows' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 My Process Flows
               </h2>
@@ -709,7 +709,7 @@ const Dashboard = () => {
                             <div className="flex gap-2">
                               <button
                                 onClick={() => setViewingFlow(flow)}
-                                className="p-2 text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                className="p-2 text-gray-600 hover:text-accent-600 dark:text-gray-400 dark:hover:text-accent-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
                                 title="View"
                               >
                                 <Eye className="w-4 h-4" />
@@ -733,7 +733,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'activity' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 Recent Activity
               </h2>
@@ -747,7 +747,7 @@ const Dashboard = () => {
                 <div className="space-y-4">
                   {activities.map((activity) => (
                     <div key={activity.id} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="w-2 h-2 bg-primary-600 rounded-full mt-2"></div>
+                      <div className="w-2 h-2 bg-accent-600 rounded-full mt-2"></div>
                       <div className="flex-1">
                         <p className="text-gray-900 dark:text-white">{activity.message}</p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -771,7 +771,7 @@ const Dashboard = () => {
                 {/* Profile */}
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Profile</h3>
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-primary-600 p-6">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
                         <User className="w-6 h-6 text-white" />
@@ -787,7 +787,7 @@ const Dashboard = () => {
                 {/* Theme */}
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Appearance</h3>
-                  <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-primary-600">
                     <div className="flex items-center gap-3">
                       {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
                       <span className="text-gray-900 dark:text-white">
