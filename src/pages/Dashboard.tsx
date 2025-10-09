@@ -452,20 +452,20 @@ const Dashboard = () => {
         </div>
 
         {/* Tab Content */}
-        <div role="tabpanel" className="min-h-[calc(100vh-12rem)]">
+        <div role="tabpanel" className="min-h-[calc(100vh-10rem)]">
           {activeTab === 'overview' && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* User Profile Header */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
                 <h2 
                   data-section="overview"
-                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
+                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
                   tabIndex={-1}
                 >
                   Welcome back, {userProfile.fullName}
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-accent-600 p-4">
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</h3>
                     <p className="text-gray-900 dark:text-white">{userProfile.fullName}</p>
@@ -487,7 +487,7 @@ const Dashboard = () => {
                   Quick Actions
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <button
                     onClick={() => setActiveTab('flows')}
                     className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-primary-600 dark:border-accent-600 hover:border-primary-500 dark:hover:border-accent-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
@@ -530,7 +530,7 @@ const Dashboard = () => {
               </div>
 
               {/* Recent Activity & Version History */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Recent Activity */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20">
@@ -793,7 +793,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'settings' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[600px]">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[calc(100vh-16rem)]">
               <h2 
                 data-section="settings"
                 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
@@ -854,7 +854,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'templates' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[calc(100vh-16rem)] overflow-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[calc(100vh-14rem)] overflow-auto">
               <h2 
                 data-section="templates"
                 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
@@ -863,7 +863,7 @@ const Dashboard = () => {
                 Templates (Beta)
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {templates.map((template) => (
                   <div key={template.name} className="border-4 border-primary-600 dark:border-accent-600 rounded-lg p-6">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
