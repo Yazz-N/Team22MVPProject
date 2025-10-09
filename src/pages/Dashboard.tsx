@@ -575,7 +575,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'upload' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 min-h-[400px]">
               <h2 
                 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6" 
                 tabIndex={-1}
@@ -584,7 +584,7 @@ const Dashboard = () => {
               </h2>
 
               {!showSuccess ? (
-                <div className="space-y-6 min-h-[400px]">
+                <div className="space-y-6">
                   {/* File Drop Zone */}
                   <div
                     onDrop={handleFileDrop}
@@ -652,7 +652,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-8 min-h-[400px] flex flex-col justify-center">
+                <div className="text-center py-8">
                   <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
                   </div>
