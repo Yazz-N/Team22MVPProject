@@ -355,16 +355,15 @@ const Dashboard = () => {
   // Auto-scroll to top when switching tabs
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
-    // Scroll to top of dashboard content, accounting for fixed header
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Focus on section heading for accessibility
+    // Scroll section into view and focus heading
     setTimeout(() => {
-      const heading = document.querySelector(`[data-section="${tabId}"]`);
+      const heading = document.querySelector(`[data-section="${tabId}"]`) as HTMLElement;
       if (heading) {
-        (heading as HTMLElement).focus();
+        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        heading.focus();
       }
-    }, 100);
+    }, 50);
   };
 
   const formatFileSize = (bytes: number) => {
@@ -452,14 +451,14 @@ const Dashboard = () => {
         </div>
 
         {/* Tab Content */}
-        <div role="tabpanel" className="min-h-[calc(100vh-12rem)]">
+        <div role="tabpanel">
           {activeTab === 'overview' && (
             <div className="space-y-6">
               {/* User Profile Header */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2">
                 <h2 
                   data-section="overview"
-                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
+                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-24" 
                   tabIndex={-1}
                 >
                   Welcome back, {userProfile.fullName}
@@ -587,10 +586,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'upload' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2 max-h-[calc(100vh-12rem)] overflow-auto">
               <h2 
                 data-section="upload"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-24" 
                 tabIndex={-1}
               >
                 Upload a document to generate your process flow
@@ -695,10 +694,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'flows' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
               <h2 
                 data-section="flows"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-24" 
                 tabIndex={-1}
               >
                 My Process Flows
@@ -760,10 +759,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'activity' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
               <h2 
                 data-section="activity"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-24" 
                 tabIndex={-1}
               >
                 Recent Activity
@@ -793,10 +792,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'settings' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 min-h-[600px]">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2 max-h-[calc(100vh-12rem)] overflow-auto">
               <h2 
                 data-section="settings"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-24" 
                 tabIndex={-1}
               >
                 Settings
@@ -854,10 +853,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'templates' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 min-h-[calc(100vh-8rem)] overflow-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2 max-h-[calc(100vh-12rem)] overflow-auto">
               <h2 
                 data-section="templates"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-24" 
                 tabIndex={-1}
               >
                 Templates (Beta)
