@@ -457,7 +457,6 @@ const Dashboard = () => {
             <div className="space-y-4">
               {/* User Profile Header */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" tabIndex={-1}>
                 <h2 
                   data-section="overview"
                   className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
