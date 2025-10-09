@@ -575,7 +575,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'upload' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 min-h-[400px]">
               <h2 
                 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6" 
                 tabIndex={-1}
