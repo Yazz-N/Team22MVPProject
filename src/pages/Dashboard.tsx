@@ -197,7 +197,7 @@ const Dashboard = () => {
     const newActivity: Activity = {
       id: Date.now().toString(),
       message,
-      created_at: new Date().toISOString()
+      createdat: new Date().toISOString()
     };
     
     try {
@@ -269,7 +269,7 @@ const Dashboard = () => {
     const newFlow: Flow = {
       id: Date.now().toString(),
       filename: selectedFile.name,
-      created_at: new Date().toISOString(),
+      createdat: new Date().toISOString(),
       status: 'Draft'
     };
 
@@ -315,7 +315,7 @@ const Dashboard = () => {
     const newFlow: Flow = {
       id: Date.now().toString(),
       filename: `${templateName} Template`,
-      created_at: new Date().toISOString(),
+      createdat: new Date().toISOString(),
       status: 'Draft'
     };
 
@@ -535,7 +535,7 @@ const Dashboard = () => {
                           <div className="flex-1">
                             <p className="text-sm text-gray-900 dark:text-white">{activity.message}</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {formatRelativeTime(activity.created_at)}
+                              {formatRelativeTime(activity.createdat)}
                             </p>
                           </div>
                         </div>
@@ -559,7 +559,7 @@ const Dashboard = () => {
                           <div className="flex-1">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">{flow.filename}</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {formatRelativeTime(flow.created_at)}
+                              {formatRelativeTime(flow.createdat)}
                             </p>
                           </div>
                           <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full">
@@ -716,7 +716,7 @@ const Dashboard = () => {
                             </span>
                           </td>
                           <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
-                            {formatRelativeTime(flow.created_at)}
+                            {formatRelativeTime(flow.createdat)}
                           </td>
                           <td className="py-3 px-4">
                             <div className="flex gap-2">

@@ -74,11 +74,11 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
 
     const message: ChatMessage = {
       id: crypto.randomUUID(),
-      thread_id: currentThread.id,
-      user_id: userId,
+      threadid: currentThread.id,
+      userid: userId,
       role,
       content,
-      created_at: new Date().toISOString()
+      createdat: new Date().toISOString()
     };
 
     try {
@@ -351,7 +351,7 @@ const AssistantPanel: React.FC<AssistantPanelProps> = ({ isOpen, onClose }) => {
                               ? 'text-primary-100' 
                               : 'text-gray-500 dark:text-gray-400'
                           }`}>
-                            {formatTime(message.created_at)}
+                            {formatTime(message.createdat)}
                           </p>
                         </div>
                       </div>

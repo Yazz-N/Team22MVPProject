@@ -39,7 +39,7 @@ export const localChatStore = {
     await this.addMessage(clearMessage);
   },
   async clearThread(threadId: string): Promise<void> {
-    const messages = read<ChatMessage[]>(MKEY, []).filter(m => m.threadId !== threadId);
+    const messages = read<ChatMessage[]>(MKEY, []).filter(m => m.threadid !== threadId);
     write(MKEY, messages);
   }
 };
