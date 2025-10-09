@@ -441,7 +441,7 @@ const Dashboard = () => {
           {activeTab === 'overview' && (
             <div className="space-y-8">
               {/* User Profile Header */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                   Welcome back, {userProfile.fullName}
                 </h2>
@@ -463,7 +463,7 @@ const Dashboard = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                   Quick Actions
                 </h2>
@@ -471,14 +471,14 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   <button
                     onClick={() => setActiveTab('flows')}
-                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
+                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-primary-600 dark:border-primary-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
                   >
                     <FileText className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3 group-hover:scale-110 transition-transform" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Update a Process Flow</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Manage your existing process flows</p>
                   </button>
                   
-                  <div className="group p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                  <div className="group p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-primary-600">
                     <FileText className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Last Uploaded Document</h3>
                     {recentDocument ? (
@@ -501,7 +501,7 @@ const Dashboard = () => {
                   
                   <button
                     onClick={() => navigate('/book')}
-                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
+                    className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-primary-600 dark:border-primary-600 hover:border-primary-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
                   >
                     <Calendar className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-3 group-hover:scale-110 transition-transform" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Book a Support Call</h3>
@@ -513,7 +513,7 @@ const Dashboard = () => {
               {/* Recent Activity & Version History */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Recent Activity */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                     Recent Activity
                   </h2>
@@ -538,7 +538,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Version History */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                     Version History
                   </h2>
@@ -568,7 +568,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'upload' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 Upload a document to generate your process flow
               </h2>
@@ -635,7 +635,7 @@ const Dashboard = () => {
                     <button
                       onClick={handleClear}
                       disabled={!selectedFile}
-                      className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-6 py-3 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg transition-colors min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Clear
                     </button>
@@ -662,7 +662,7 @@ const Dashboard = () => {
                       setShowSuccess(false);
                       setSelectedFile(null);
                     }}
-                    className="mt-6 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors min-h-[44px]"
+                    className="mt-6 px-6 py-3 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg transition-colors min-h-[44px]"
                   >
                     Upload Another Document
                   </button>
@@ -672,7 +672,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'flows' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 My Process Flows
               </h2>
@@ -762,7 +762,7 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'settings' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-primary-600 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 Settings
               </h2>
@@ -819,14 +819,14 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'templates' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-accent-600 dark:border-accent-600 p-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 Templates (Beta)
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {templates.map((template) => (
-                  <div key={template.name} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                  <div key={template.name} className="border-4 border-accent-600 dark:border-accent-600 rounded-lg p-6">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                       {template.name}
                     </h3>
@@ -835,7 +835,7 @@ const Dashboard = () => {
                     </p>
                     <button
                       onClick={() => handleUseTemplate(template.name)}
-                      className="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors min-h-[44px]"
+                      className="w-full px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white font-medium rounded-lg transition-colors min-h-[44px]"
                     >
                       Use Template
                     </button>
