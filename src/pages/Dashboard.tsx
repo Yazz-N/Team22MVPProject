@@ -787,7 +787,7 @@ const Dashboard = () => {
                 {/* Theme */}
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Appearance</h3>
-                  <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-primary-600">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-accent-600">
                     <div className="flex items-center gap-3">
                       {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
                       <span className="text-gray-900 dark:text-white">
