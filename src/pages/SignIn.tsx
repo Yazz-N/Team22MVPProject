@@ -63,19 +63,18 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    setLoading(true);
-    
+    // Dev bypass - skip all validation and Supabase calls
     if (isDevBypass) {
-      // In dev bypass mode, skip validation and go directly to dashboard
+      setLoading(true);
       signInWithEmail('dev@example.com', 'password').then(() => {
         navigate('/dashboard');
-      }).catch(() => {
-        navigate('/dashboard'); // Force navigation even if there's an error
       }).finally(() => {
         setLoading(false);
       });
       return;
     }
+    
+    setLoading(true);
     
     // Normal validation and sign-in flow
     if (validateForm()) {
