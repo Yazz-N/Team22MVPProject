@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Mail, Lock } from 'lucide-react';
 import { signInWithEmail } from '../lib/auth';
+import { isDevBypass } from '../lib/env';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -17,8 +18,6 @@ const SignIn = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // Dev-only bypass check
-  const isDevBypass = () => import.meta.env.VITE_AUTH_BYPASS === 'true';
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -42,7 +41,7 @@ const SignIn = () => {
     };
 
     // Skip validation in dev bypass mode
-    if (isDevBypass()) {
+    if (isDevBypass) {
       return true;
     }
     if (!formData.email) {
@@ -66,7 +65,7 @@ const SignIn = () => {
     
     setLoading(true);
     
-    if (isDevBypass()) {
+    if (isDevBypass) {
       // In dev bypass mode, skip validation and go directly to dashboard
       signInWithEmail('dev@example.com', 'password').then(() => {
         navigate('/dashboard');
@@ -112,7 +111,7 @@ const SignIn = () => {
             <p className="text-gray-600 dark:text-gray-400">
               Sign in to your OpsCentral account
             </p>
-            {isDevBypass() && (
+            {isDevBypass && (
               <p className="text-amber-600 dark:text-amber-400 text-sm mt-2">
                 Development mode: Any credentials will work
               </p>

@@ -1,14 +1,11 @@
 import { supabase } from "./supabaseClient";
-import { supabaseConfigured } from "./env";
+import { supabaseConfigured, isDevBypass } from "./env";
 
 const KEY = "authed";
 
-// Dev-only bypass check
-const isDevBypass = () => String(import.meta.env.VITE_AUTH_BYPASS).toLowerCase() === 'true';
-
 export async function isAuthed(): Promise<boolean> {
   // Dev bypass for dashboard preview
-  if (isDevBypass()) {
+  if (isDevBypass) {
     return true;
   }
   
@@ -21,7 +18,7 @@ export async function isAuthed(): Promise<boolean> {
 
 export async function signInWithEmail(email: string, password: string) {
   // Dev bypass - simulate successful sign-in
-  if (isDevBypass()) {
+  if (isDevBypass) {
     localStorage.setItem(KEY, "1");
     return Promise.resolve({ data: { user: { email: "dev@example.com" } }, error: null });
   }
@@ -35,7 +32,7 @@ export async function signInWithEmail(email: string, password: string) {
 
 export async function signOut() {
   // Dev bypass - clear local flag
-  if (isDevBypass()) {
+  if (isDevBypass) {
     localStorage.removeItem(KEY);
     return;
   }

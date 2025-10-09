@@ -5,6 +5,7 @@ import { isAuthed, signOut } from '../lib/auth';
 import { store } from '../lib/store';
 import { supabase } from '../lib/supabaseClient';
 import { supabaseConfigured } from '../lib/env';
+import { isDevBypass } from '../lib/env';
 import type { Flow, Activity } from '../lib/store/types';
 
 const Dashboard = () => {
@@ -35,12 +36,9 @@ const Dashboard = () => {
     url: string;
   } | null>(null);
 
-  // Dev-only bypass check
-  const isDevBypass = () => import.meta.env.VITE_AUTH_BYPASS === 'true';
-
   // Check if we're in dev bypass mode first
   useEffect(() => {
-    if (isDevBypass()) {
+    if (isDevBypass) {
       setUserEmail('dev@example.com');
       setUserProfile({
         fullName: 'Development User',
@@ -62,7 +60,7 @@ const Dashboard = () => {
   useEffect(() => {
     const checkAuth = async () => {
       // Skip auth check if we're in dev bypass mode
-      if (isDevBypass()) {
+      if (isDevBypass) {
         return;
       }
       
