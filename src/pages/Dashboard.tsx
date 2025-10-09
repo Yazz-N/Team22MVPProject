@@ -650,6 +650,7 @@ const Dashboard = () => {
                       Clear
                     </button>
                   </div>
+                </div>
               ) : (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
