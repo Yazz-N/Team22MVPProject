@@ -416,11 +416,10 @@ const Dashboard = () => {
           <h1 
             id="dashboard-title"
             tabIndex={-1}
-            className="text-3xl font-bold text-gray-900 dark:text-white mb-2 focus:outline-none"
+            className="text-3xl font-bold text-accent-600 mb-2 focus:outline-none"
           >
             Dashboard
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">Select a tab to get started.</p>
         </div>
 
         {/* Tabs */}
@@ -451,14 +450,14 @@ const Dashboard = () => {
         </div>
 
         {/* Tab Content */}
-        <div role="tabpanel">
+        <div role="tabpanel" className="max-h-[calc(100vh-16rem)] overflow-auto">
           {activeTab === 'overview' && (
-            <div className="space-y-6">
+            <div className="space-y-4 mt-2">
               {/* User Profile Header */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
                 <h2 
                   data-section="overview"
-                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-24" 
+                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
                   tabIndex={-1}
                 >
                   Welcome back, {userProfile.fullName}
@@ -586,10 +585,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'upload' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2 max-h-[calc(100vh-12rem)] overflow-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2">
               <h2 
                 data-section="upload"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-24" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
                 tabIndex={-1}
               >
                 Upload a document to generate your process flow
@@ -792,10 +791,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'settings' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2 max-h-[calc(100vh-12rem)] overflow-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2">
               <h2 
                 data-section="settings"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-24" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
                 tabIndex={-1}
               >
                 Settings
@@ -853,10 +852,10 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'templates' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2 max-h-[calc(100vh-12rem)] overflow-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 mt-2">
               <h2 
                 data-section="templates"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-24" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
                 tabIndex={-1}
               >
                 Templates (Beta)
