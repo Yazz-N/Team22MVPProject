@@ -59,16 +59,22 @@ const Dashboard = () => {
   // Check authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
-      // Skip auth check if we're in dev bypass mode
-      if (isDevBypass) {
-        return;
-      }
+      // Always allow access for design review
+      setUserEmail('demo@opscentral.com');
+      setUserProfile({
+        fullName: 'Demo User',
+        department: 'Product Management',
+        lastSignIn: new Date().toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      });
+      setLoading(false);
+      return;
       
-      const authed = await isAuthed();
-      if (!authed) {
-        navigate('/signin');
-        return;
-      }
       
       // Get user email if available (production mode)
       if (supabaseConfigured && supabase) {

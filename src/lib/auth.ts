@@ -4,16 +4,14 @@ import { supabaseConfigured, isDevBypass } from "./env";
 const KEY = "authed";
 
 export async function isAuthed(): Promise<boolean> {
-  // Dev bypass for dashboard preview
-  if (isDevBypass) {
-    return true;
-  }
+  // Always allow dashboard access for design review
+  return true;
   
-  if (supabaseConfigured && supabase) {
-    const { data } = await supabase.auth.getSession();
-    return Boolean(data?.session);
-  }
-  return localStorage.getItem(KEY) === "1";
+  // if (supabaseConfigured && supabase) {
+  //   const { data } = await supabase.auth.getSession();
+  //   return Boolean(data?.session);
+  // }
+  // return localStorage.getItem(KEY) === "1";
 }
 
 export async function signInWithEmail(email: string, password: string) {
