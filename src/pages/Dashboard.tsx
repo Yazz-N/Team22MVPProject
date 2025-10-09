@@ -452,20 +452,20 @@ const Dashboard = () => {
         </div>
 
         {/* Tab Content */}
-        <div role="tabpanel" className="min-h-[calc(100vh-10rem)]">
+        <div role="tabpanel" className="min-h-[calc(100vh-12rem)]">
           {activeTab === 'overview' && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* User Profile Header */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
                 <h2 
                   data-section="overview"
-                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
+                  className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
                   tabIndex={-1}
                 >
                   Welcome back, {userProfile.fullName}
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-accent-600 p-4">
                     <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</h3>
                     <p className="text-gray-900 dark:text-white">{userProfile.fullName}</p>
@@ -482,12 +482,12 @@ const Dashboard = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20">
                   Quick Actions
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   <button
                     onClick={() => setActiveTab('flows')}
                     className="group p-6 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border-4 border-primary-600 dark:border-accent-600 hover:border-primary-500 dark:hover:border-accent-500 transition-all duration-300 hover:-translate-y-1 text-left min-h-[44px]"
@@ -530,9 +530,9 @@ const Dashboard = () => {
               </div>
 
               {/* Recent Activity & Version History */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recent Activity */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20">
                     Recent Activity
                   </h2>
@@ -557,7 +557,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Version History */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6">
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20">
                     Version History
                   </h2>
@@ -793,19 +793,19 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'settings' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[calc(100vh-16rem)]">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 min-h-[600px]">
               <h2 
                 data-section="settings"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
                 tabIndex={-1}
               >
                 Settings
               </h2>
 
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {/* Profile */}
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Profile</h3>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Profile</h3>
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-accent-600 p-6">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
@@ -821,7 +821,7 @@ const Dashboard = () => {
 
                 {/* Theme */}
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Appearance</h3>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Appearance</h3>
                   <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border-4 border-primary-600 dark:border-accent-600">
                     <div className="flex items-center gap-3">
                       {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
@@ -840,7 +840,7 @@ const Dashboard = () => {
 
                 {/* Sign Out */}
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Account</h3>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Account</h3>
                   <button
                     onClick={handleSignOut}
                     className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors min-h-[44px]"
@@ -854,16 +854,16 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'templates' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[calc(100vh-14rem)] overflow-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-6 min-h-[calc(100vh-8rem)] overflow-auto">
               <h2 
                 data-section="templates"
-                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" 
+                className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-4 scroll-mt-20" 
                 tabIndex={-1}
               >
                 Templates (Beta)
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {templates.map((template) => (
                   <div key={template.name} className="border-4 border-primary-600 dark:border-accent-600 rounded-lg p-6">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
