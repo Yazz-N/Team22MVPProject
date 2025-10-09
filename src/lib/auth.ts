@@ -4,7 +4,7 @@ import { supabaseConfigured } from "./env";
 const KEY = "authed";
 
 // Dev-only bypass check
-const isDevBypass = () => import.meta.env.VITE_AUTH_BYPASS === 'true';
+const isDevBypass = () => String(import.meta.env.VITE_AUTH_BYPASS).toLowerCase() === 'true';
 
 export async function isAuthed(): Promise<boolean> {
   // Dev bypass for dashboard preview
