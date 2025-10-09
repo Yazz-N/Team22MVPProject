@@ -584,7 +584,8 @@ const Dashboard = () => {
               </h2>
 
               {!showSuccess ? (
-                <div className="space-y-6">
+                <div className="overflow-x-auto">
+                  <div className="space-y-6">
                   {/* File Drop Zone */}
                   <div
                     onDrop={handleFileDrop}
@@ -650,9 +651,11 @@ const Dashboard = () => {
                       Clear
                     </button>
                   </div>
+                  </div>
                 </div>
               ) : (
-                <div className="text-center py-8">
+                <div className="overflow-x-auto">
+                  <div className="text-center py-8">
                   <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
                   </div>
@@ -676,6 +679,7 @@ const Dashboard = () => {
                   >
                     Upload Another Document
                   </button>
+                  </div>
                 </div>
               )}
             </div>
