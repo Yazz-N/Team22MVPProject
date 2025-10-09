@@ -352,6 +352,13 @@ const Dashboard = () => {
     }
   };
 
+  // Auto-scroll to top when switching tabs
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    // Scroll to top of dashboard content, accounting for fixed header
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -420,7 +427,7 @@ const Dashboard = () => {
                     key={tab.id}
                     role="tab"
                     aria-selected={activeTab === tab.id}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => handleTabChange(tab.id)}
                     className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap min-h-[44px] ${
                       activeTab === tab.id
                         ? 'border-primary-500 text-primary-600 dark:text-primary-400'
@@ -437,12 +444,12 @@ const Dashboard = () => {
         </div>
 
         {/* Tab Content */}
-        <div role="tabpanel">
+        <div role="tabpanel" className="min-h-[calc(100vh-12rem)]">
           {activeTab === 'overview' && (
-            <div className="space-y-8">
+            <div className="space-y-6">
               {/* User Profile Header */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" tabIndex={-1}>
                   Welcome back, {userProfile.fullName}
                 </h2>
                 
@@ -464,7 +471,7 @@ const Dashboard = () => {
 
               {/* Quick Actions */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20">
                   Quick Actions
                 </h2>
                 
@@ -511,10 +518,10 @@ const Dashboard = () => {
               </div>
 
               {/* Recent Activity & Version History */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recent Activity */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20">
                     Recent Activity
                   </h2>
                   
@@ -539,7 +546,7 @@ const Dashboard = () => {
 
                 {/* Version History */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20">
                     Version History
                   </h2>
                   
@@ -569,7 +576,7 @@ const Dashboard = () => {
 
           {activeTab === 'upload' && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" tabIndex={-1}>
                 Upload a document to generate your process flow
               </h2>
 
@@ -673,7 +680,7 @@ const Dashboard = () => {
 
           {activeTab === 'flows' && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" tabIndex={-1}>
                 My Process Flows
               </h2>
 
@@ -734,7 +741,7 @@ const Dashboard = () => {
 
           {activeTab === 'activity' && (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" tabIndex={-1}>
                 Recent Activity
               </h2>
 
@@ -762,8 +769,8 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'settings' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[600px]">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" tabIndex={-1}>
                 Settings
               </h2>
 
@@ -819,8 +826,8 @@ const Dashboard = () => {
           )}
 
           {activeTab === 'templates' && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-4 border-primary-600 dark:border-accent-600 p-8 min-h-[calc(100vh-16rem)] overflow-auto">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-accent-400 mb-6 scroll-mt-20" tabIndex={-1}>
                 Templates (Beta)
               </h2>
 
