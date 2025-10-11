@@ -63,21 +63,17 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    setLoading(true);
+    
     // Dev bypass - skip all validation and Supabase calls
     if (isDevBypass) {
-      setLoading(true);
       signInWithEmail('dev@example.com', 'password').then(() => {
         navigate('/dashboard');
       }).finally(() => {
         setLoading(false);
       });
-      return;
-    }
-    
-    setLoading(true);
-    
-    // Normal validation and sign-in flow
-    if (validateForm()) {
+    } else if (validateForm()) {
+      // Normal validation and sign-in flow
       signInWithEmail(formData.email, formData.password).then((result) => {
         if (result.error) {
           setErrors({
@@ -96,6 +92,9 @@ const SignIn = () => {
       }).finally(() => {
         setLoading(false);
       });
+    } else {
+      // Validation failed
+      setLoading(false);
     }
   };
 
